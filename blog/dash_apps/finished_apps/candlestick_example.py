@@ -28,13 +28,13 @@ app = DjangoDash('Candlestick', external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = html.Div([
     dcc.Input(id='stock-ticker', type='text', value='TSLA', placeholder='TSLA'),
     dcc.DatePickerRange(
-    id='my-date-picker-range',
-    month_format='D-M-Y',
-    min_date_allowed=date(2010, 1, 1),
-    max_date_allowed=today(),
-    initial_visible_month=date(2021, 1, 1),
-    start_date = date(2021,1,1),
-    end_date=today()
+        id='my-date-picker-range',
+        month_format='D-M-Y',
+        min_date_allowed=date(2010, 1, 1),
+        max_date_allowed=today(),
+        initial_visible_month=date(2021, 1, 1),
+        start_date = date(2021,1,1),
+        end_date=today()
     ),
     html.Button('Submit', id='submit_val', n_clicks=0),
     dcc.Dropdown(id='strategy-dropdown', 

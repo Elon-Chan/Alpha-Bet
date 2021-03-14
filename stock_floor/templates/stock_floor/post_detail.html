@@ -20,7 +20,6 @@
     <h2>Comments</h2>
     {% if not post.comments.all %}
         No Comments
-        <a href="#">Add Comment</a>
     {% else %}
         {% for comment in post.comments.all %}
             {{ comment.comment_author }} - {% localtime on %} {{ comment.comment_date_added }} {% endlocaltime %}
@@ -29,6 +28,6 @@
             <hr/>
         {% endfor %}
         <br/>
-        <a class="btn btn-primary btn-sm" href="{% url 'stockfloor_postcomment' slug=post.slug%}">Add Comment</a>
     {% endif %}
+    <a class="btn btn-primary btn-sm" href="{% url 'stockfloor_postcomment' slug=post.slug%}">Add Comment</a>
 {% endblock %}

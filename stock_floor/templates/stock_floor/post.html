@@ -3,6 +3,8 @@
 {% block title %}Stock Floor{% endblock %}
 
 {% block content %}
+  <a href="{% url 'create' %}" class="btn btn-primary">Create New Post</a>
+    <hr/>
     {% for post in post %}
       <div class="card">
         <div class="card-header">
@@ -20,5 +22,4 @@
       </div>
       <hr/>
     {% endfor %}
-    <a href="{% url 'create' %}" class="btn btn-primary">Create New Post</a>
 {% endblock %}

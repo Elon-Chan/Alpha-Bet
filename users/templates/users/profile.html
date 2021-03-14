@@ -1,0 +1,13 @@
+{% extends "stock_floor/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+          {% if user.is_superuser %}
+            <p class="text-secondary">You are superuser.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+{% endblock content %}

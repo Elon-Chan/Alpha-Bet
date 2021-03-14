@@ -1,0 +1,22 @@
+{% extends 'stock_floor/base.html' %}
+
+{% block title %}Post with "{{ tag.name }}"{% endblock %}
+
+{% block content %}
+    <h1 class="mt-5">Post with "{{ tag.name }}" tag</h1>
+    <p>
+        {% for post in tag.posts.all %}
+            <div class="card">
+                <div class="card-header">
+                {{ post.date_posted|date:"F d, Y" }}
+                </div>
+                <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.content|truncatewords:20 }}</p>
+                <a href="{{ post.get_absolute_url }}" class="btn btn-light">Read</a>
+                </div>
+            </div>
+            <hr/>
+        {% endfor %}
+    </p>
+{% endblock %}

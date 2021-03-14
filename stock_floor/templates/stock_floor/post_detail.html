@@ -1,0 +1,34 @@
+{% extends 'stock_floor/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+{% load tz %}
+{% get_current_timezone as TIME_ZONE %}
+{% block content %}
+    <h1 class="mt-5">{{ post.title }}</h1>
+    <p>
+        {{ post.content }}
+        <br/>
+        {% for tag in post.tags.all %}
+            <a href="{{ tag.get_absolute_url }}" class="badge badge-info text-primary">#{{ tag.name }}</a>
+        {% endfor %}
+    </p>
+    {% if post.author == user %}
+        <a href="{{ post.get_update_url }}"class="btn btn-primary">Update Your Post</a>
+        <a href="{{ post.get_delete_url }}"class="btn btn-primary">Delete this Post</a>
+    {% endif %}
+    <hr/>
+    <h2>Comments</h2>
+    {% if not post.comments.all %}
+        No Comments
+        <a href="#">Add Comment</a>
+    {% else %}
+        {% for comment in post.comments.all %}
+            {{ comment.comment_author }} - {% localtime on %} {{ comment.comment_date_added }} {% endlocaltime %}
+            <br/>
+            {{ comment.comment_content }}
+            <hr/>
+        {% endfor %}
+        <br/>
+        <a class="btn btn-primary btn-sm" href="{% url 'stockfloor_postcomment' slug=post.slug%}">Add Comment</a>
+    {% endif %}
+{% endblock %}

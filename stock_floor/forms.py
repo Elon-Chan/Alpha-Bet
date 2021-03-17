@@ -21,9 +21,8 @@ class TagCreateForm(forms.ModelForm):
 class CommentCreateForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['comment_author', 'comment_content']
+        fields = ['comment']
 
         widgets = {
-            'comment_author': forms.TextInput(attrs={'class': 'form-control'}),
-            'comment_content': forms.Textarea(attrs={'class': 'form-control'})
+            'comment': forms.Textarea(attrs={'class': 'form-control'})
         }

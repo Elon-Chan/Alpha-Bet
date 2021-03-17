@@ -2,14 +2,14 @@ from django.urls import path
 from .views import (
     post_list,about,
     mainpage,
-    post_detail,
     tag_detail,
     tag_list,
     PostCreateView,
     TagCreate,
     PostUpdateView,
     PostDeleteView,
-    PostCommentCreateView
+    PostCommentCreateView,
+    PostDetailView
 )
 from . import views
 
@@ -17,7 +17,7 @@ urlpatterns = [
     path('', mainpage, name='stockfloor_blog'),
     path('stockfloor/about/', about, name='stockfloor_about'),
     path('stockfloor/', post_list, name='stockfloor_postlist'),
-    path('stockfloor/post/<str:slug>/', post_detail, name='stockfloor_postdetail'),
+    path('stockfloor/post/<str:slug>/', PostDetailView.as_view(), name='stockfloor_postdetail'),
     path('stockfloor/post/<str:slug>/update/', PostUpdateView.as_view(), name='stockfloor_postupdate'),
     path('stockfloor/post/<str:slug>/delete/', PostDeleteView.as_view(), name='stockfloor_postdelete'),
     path('stockfloor/post/<str:slug>/comment/', PostCommentCreateView.as_view(), name='stockfloor_postcomment'),

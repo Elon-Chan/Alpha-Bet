@@ -18,16 +18,25 @@
     {% endif %}
     <hr/>
     <h2>Comments</h2>
-    {% if not post.comments.all %}
-        No Comments
+    {% if not comment %}
+        <h5>No Comments Yet...</h5>
     {% else %}
-        {% for comment in post.comments.all %}
+        {% for comment in comment %}
             {{ comment.comment_author }} - {% localtime on %} {{ comment.comment_date_added }} {% endlocaltime %}
             <br/>
-            {{ comment.comment_content }}
+            {{ comment.comment }}
             <hr/>
         {% endfor %}
-        <br/>
     {% endif %}
-    <a class="btn btn-primary btn-sm" href="{% url 'stockfloor_postcomment' slug=post.slug%}">Add Comment</a>
+    <!-- Comment Form -->
+    <div class="section ">
+        <form action="{% url  'stockfloor_postdetail' slug=post.slug %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form }}
+            </div>
+            <hr/>
+            <button class="btn btn-outline-primary" type="submit">Comment</button>
+        </form>
+    </div>
 {% endblock %}

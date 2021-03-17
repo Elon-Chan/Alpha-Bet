@@ -6,10 +6,11 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import View, CreateView, UpdateView
+from hitcount.views import HitCountDetailView
 from django.contrib import messages
 
 def mainpage(request):
-    return render(request, 'stock_floor/mainpage.html', {'title': 'Welcome to Alpha Bet'})
+    return render(request, 'stock_floor/index.html', {'title': 'Welcome to Alpha Bet'})
 
 def about(request):
     return render(request, 'stock_floor/about.html', {'title': 'About Alpha Bet'})
@@ -22,10 +23,38 @@ def post_list(request):
     }
     return render(request, 'stock_floor/post.html', context)
 
-@login_required
-def post_detail(request, slug):
-    post = Post.objects.get(slug__iexact=slug)
-    return render(request, 'stock_floor/post_detail.html', context={'post': post,})
+class PostDetailView(HitCountDetailView):
+    model = Post
+    template_name = 'stock_floor/post_detail.html'
+    slug_field = "slug"
+
+    form = CommentCreateForm
+
+    def post(self, request, *args, **kwargs):
+        form = CommentCreateForm(request.POST)
+        if form.is_valid():
+            form.instance.comment_author_id = self.request.user.id
+            post = self.get_object()
+            form.instance.user = request.user
+            form.instance.post = post
+            form.save()
+
+            return redirect(reverse('stockfloor_postdetail', kwargs={'slug': post.slug}))
+
+    def get_context_data(self, **kwargs):
+        comment = Comment.objects.all().filter(post=self.object.id)
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'form':self.form,
+            'comment': comment,
+        })
+
+        return context
+
+    @login_required
+    def post_detail(request, slug):
+        post = Post.objects.get(slug__iexact=slug)
+        return render(request, 'stock_floor/post_detail.html', context={'post': post,})
 
 @login_required
 def tag_list(request):
@@ -81,7 +110,6 @@ class PostDeleteView(View):
 
 class PostCommentCreateView(CreateView):
     model = Comment
-    #form_class = CommentCreateForm
     template_name = 'stock_floor/post_add_comment.html'
     fields = '__all__'
     success_url = '/stockfloor'

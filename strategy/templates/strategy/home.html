@@ -1,0 +1,11 @@
+{% extends "stock_floor/base.html" %}
+
+{% block title %}Strategy Analyzer{% endblock %}
+
+{% block content %}
+
+{%load plotly_dash%}
+
+{%plotly_app name="strategy_analyzer" ratio=0.85%}
+
+{% endblock %}

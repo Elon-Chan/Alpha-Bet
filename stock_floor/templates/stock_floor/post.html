@@ -1,0 +1,47 @@
+{% extends 'stock_floor/base.html' %}
+
+{% block title %}Stock Floor{% endblock %}
+
+{% block content %}
+  <a href="{% url 'create' %}" class="btn btn-primary">Create New Post</a>
+    <hr/>
+    {% for post in page.object_list %}
+      <div class="card">
+        <div class="card-header">
+          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a> by {{ post.author }}  {{ post.date_posted|date:"F d, Y" }}
+        </div>
+        <div class="card-footer">
+          {% for tgtags in post.tgtags.all %}
+          <a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary">#{{ tgtags }} </a>
+          {% endfor %}
+        </div>
+      </div>
+      <hr/>
+    {% endfor %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="{{ prev_url }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        {% for n in page.paginator.page_range %}
+          {% if page.number == n %}
+              <li class="page-item active" aria-current="page">
+                  <a href="?page={{ n }}" class="page-link">{{ n }}</a>
+              </li>
+          {% else %}
+              <li class="page-item">
+                  <a href="?page={{ n }}" class="page-link">{{ n }}</a>
+              </li>
+          {% endif %}
+        {% endfor %}
+        <li class="page-item">
+          <a class="page-link" href="{{ next_url }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+{% endblock %}

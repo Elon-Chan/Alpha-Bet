@@ -1,0 +1,27 @@
+body {
+    z-index: -1;
+    height: 100%;
+    background: #1A1A2E;
+}
+h1, h2, h3, h4, h5, h6, h7, p {
+    color: white;
+}
+
+#Comments, #CM_Form, #Post_Update_Form {
+    color: white;
+}
+#particles-js {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #1A1A2E;
+}
+
+#img1 {
+    width: 50%;
+    height: auto;
+}
+
+#img2 {
+    height: 10%;
+}

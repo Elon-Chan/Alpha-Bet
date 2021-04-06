@@ -1,0 +1,13 @@
+{% extends 'stock_floor/base.html' %}
+
+{% block title %}Post with ""{% endblock %}
+
+{% block content %}
+    <h1 class="mt-5" style="color:white;">Post with "{{ tagname }}" tag</h1>
+    <p>
+        {% for post in tgtag %}
+            <a href="{{ post.get_absolute_url }}">{{ post }}</a>
+            <br/>
+        {% endfor %}
+    </p>
+{% endblock %}

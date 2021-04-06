@@ -1,0 +1,21 @@
+{% extends "stock_floor/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1>Log In</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset>
+            {{ form.as_p}}
+        </fieldset>
+        <button type="submit">
+            Log In
+        </button>
+        <small style="color: white;">
+            Need an account? <a href="{% url 'register' %}">Sign Up Now</a>
+            Forget password? <a href="{% url 'password_reset' %}">Reset Password</a>
+        </small>
+    </form>
+{% endblock content %}

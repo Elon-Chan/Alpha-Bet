@@ -12,7 +12,7 @@
         </div>
         <div class="card-footer">
           {% for tgtags in post.tgtags.all %}
-          <a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary">#{{ tgtags }} </a>
+          <a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary" id="postlist_tags">#{{ tgtags }} </a>
           {% endfor %}
         </div>
       </div>

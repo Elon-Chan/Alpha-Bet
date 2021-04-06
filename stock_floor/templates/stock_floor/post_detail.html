@@ -11,7 +11,7 @@
         {{ post.content }}
         <br/>
         {% for tag in post.tgtags.all %}
-            <a href="{% url 'stockfloor_tgtagsdetail' slug=post.slug %}" class="badge badge-info text-primary">#{{ tag.name }}</a>
+            <a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge badge-info text-primary">#{{ tag.name }}</a>
         {% endfor %}
     </p>
     {% if post.author == user %}
@@ -19,7 +19,7 @@
         <a href="{{ post.get_delete_url }}"class="btn btn-primary">Delete this Post</a>
     {% endif %}
     <hr/>
-    <h2 >Comments</h2>
+    <h2>Comments</h2>
     {% if not comment %}
         <h5>No Comments Yet...</h5>
     {% else %}

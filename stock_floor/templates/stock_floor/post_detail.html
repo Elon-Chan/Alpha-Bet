@@ -15,8 +15,8 @@
         {% endfor %}
     </p>
     {% if post.author == user %}
-        <a href="{{ post.get_update_url }}"class="btn btn-primary">Update Your Post</a>
-        <a href="{{ post.get_delete_url }}"class="btn btn-primary">Delete this Post</a>
+        <a id="b1" href="{{ post.get_update_url }}"class="btn btn-primary">Update Your Post</a>
+        <a id="b2" href="{{ post.get_delete_url }}"class="btn btn-primary">Delete this Post</a>
     {% endif %}
     <hr/>
     <h2>Comments</h2>
@@ -34,7 +34,7 @@
         {% endfor %}
     {% endif %}
     <!-- Comment Form -->
-    <div id="Comment_Form" style="color: white;">
+    <div id="Comment_Form">
         <form action="{% url  'stockfloor_postdetail' slug=post.slug %}" method="POST">
             {% csrf_token %}
             <div class="form-group">

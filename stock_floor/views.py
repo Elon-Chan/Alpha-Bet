@@ -27,7 +27,7 @@ def post_list(request):
     else:
         posts = Post.objects.all()
 
-    paginator = Paginator(posts, 4)
+    paginator = Paginator(posts, 6)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
 

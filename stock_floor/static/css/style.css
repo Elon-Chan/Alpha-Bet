@@ -8,7 +8,7 @@
     src: url(AspergitRegular.otf);
 }
 
-body {
+.body {
     z-index: -1;
     height: 100%;
     background: #111111;
@@ -45,11 +45,13 @@ body {
 
 #postcardBody {
     text-indent: 30px;
+    font-family: AspergitRegular;
 }
 
 #Comments {
     background-color: #48484a;
     color: white;
+    font-family: AspergitRegular;
 }
 
 #Comments > .card-body {
@@ -70,10 +72,15 @@ body {
 }
 
 #particles-js {
-    position: absolute;
-    height: auto;
+    position: fixed;
+    height: 100%;
     width: 100%;
     background: #111111;
+    z-index:-1;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    top: 0;
 }
 
 #ABNavbarLogo {
@@ -82,7 +89,16 @@ body {
     background: #48484a;
 }
 
-h1, h2, h3, h4, h5, h6, p, a {
+h1, h2, h3, h4, h5, h6, p {
     font-family: AspergitRegular;
     color: white;
+}
+
+a {
+    color: white;
+}
+
+div.navbar-collapse ul.navbar-nav li {
+    font-family: HaextPlain;
+    font-size: 20px;
 }

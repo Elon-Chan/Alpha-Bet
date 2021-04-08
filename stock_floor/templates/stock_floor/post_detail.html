@@ -41,7 +41,7 @@
         {% endfor %}
     {% endif %}
     <!-- Comment Form -->
-    <div id="Comment_Form">
+    <div id="Comment_Form" class="mb-5">
         <form action="{% url 'stockfloor_postdetail' slug=post.slug %}" method="POST">
             {% csrf_token %}
             <div class="form-group">

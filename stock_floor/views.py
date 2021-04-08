@@ -15,15 +15,12 @@ from django.core.paginator import Paginator
 def mainpage(request):
     return render(request, 'stock_floor/index.html', {'title': 'Welcome to Alpha Bet'})
 
-def about(request):
-    return render(request, 'stock_floor/about.html', {'title': 'About Alpha Bet'})
-
 @login_required
 def post_list(request):
 
     search_query = request.GET.get('search', '')
     if search_query:
-        posts = Post.objects.filter(Q(title__icontains=search_query), Q(content__icontains=search_query))
+        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(content__icontains=search_query))
     else:
         posts = Post.objects.all()
 
@@ -81,11 +78,6 @@ class PostDetailView(HitCountDetailView, ListView):
     def post_detail(request, slug):
         post = Post.objects.get(slug__iexact=slug)
         return render(request, 'stock_floor/post_detail.html', context={'post': post,})
-
-@login_required
-def TgtaglList(request):
-        tgtags = Tag.objects.all()
-        return render(request, 'stock_floor/tgtag_list.html', context={'tgtags':tgtags,})
 
 @login_required
 def TgtagDetailList(request, slug):

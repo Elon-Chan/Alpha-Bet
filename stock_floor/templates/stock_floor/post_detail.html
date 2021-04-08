@@ -5,13 +5,18 @@
 {% get_current_timezone as TIME_ZONE %}
 
 {% block content %}
-    <h1 class="mt-5" >{{ post.title }}</h1>
-    <h6>{% localtime on %} {{ post.date_posted|date:"F d, Y" }} {% endlocaltime %}</h6>
+    <h1 class="mt-5" style="font-size: 100px;">{{ post.title }}</h1>
+    <h3 style="font-size: 30px;">{{ post.author }}</h3>
+    <h3 style="font-size: 20px;">{% localtime on %} {{ post.date_posted|date:"F d, Y" }} {% endlocaltime %}</h3>
+    <div id="postcard" class="card">
+        <div id="postcardBody" class="card-body text-start ms-2" style="font-size: 20px;">
+            {{ post.content }}
+        </div>
+    </div>
     <p>
-        {{ post.content }}
         <br/>
         {% for tag in post.tgtags.all %}
-            <a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge badge-info text-primary">#{{ tag.name }}</a>
+            <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge bg-primary link-light">#{{ tag.name }}</a></span>
         {% endfor %}
     </p>
     {% if post.author == user %}
@@ -24,25 +29,26 @@
         <h5>No Comments Yet...</h5>
     {% else %}
         {% for comment in comment %}
-        <div id="Comments">
-            {{ comment.comment_author }} - {% localtime on %} {{ comment.comment_date_added }} {% endlocaltime %}
-            <br/>
-            {{ comment.comment }}
-            <br/>
-            <hr/>
+        <div id="Comments" class="card">
+            <div class="card-body ms-3">
+                {{ comment.comment_author }} - {% localtime on %} {{ comment.comment_date_added }} {% endlocaltime %}
+                <br/>
+                {{ comment.comment }}
+                <br/>
+            </div>
         </div>
+        <br/>
         {% endfor %}
     {% endif %}
     <!-- Comment Form -->
     <div id="Comment_Form">
-        <form action="{% url  'stockfloor_postdetail' slug=post.slug %}" method="POST">
+        <form action="{% url 'stockfloor_postdetail' slug=post.slug %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 {{ form }}
             </div>
             <hr/>
-            <button class="btn btn-outline-primary" type="submit" style="color:white;">Comment</button>
+            <button class="btn btn-primary" type="submit" style="color:white;">Comment</button>
         </form>
     </div>
-
 {% endblock %}

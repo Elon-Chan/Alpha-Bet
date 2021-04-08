@@ -1,0 +1,88 @@
+@font-face {
+    font-family: HaextPlain;
+    src: url(HaextPlain.otf);
+}
+
+@font-face {
+    font-family: AspergitRegular;
+    src: url(AspergitRegular.otf);
+}
+
+body {
+    z-index: -1;
+    height: 100%;
+    background: #111111;
+}
+
+#slogen {
+    font-family: HaextPlain;
+    color: white;
+}
+
+#CM_Form, #Post_Update_Form, #Comment_Form {
+    font-family: AspergitRegular;
+    color: white;
+}
+
+#postrow {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-gap: 30px;
+    padding: 10px;
+}
+
+#cardimg {
+    height: 250px;
+    width: 250px;
+}
+
+#postcard {
+    margin: 0 auto;
+    color: white;
+    background-color: #48484a;
+    width: 50%;
+}
+
+#postcardBody {
+    text-indent: 30px;
+}
+
+#Comments {
+    background-color: #48484a;
+    color: white;
+}
+
+#Comments > .card-body {
+    background-color: #48484a;
+    color: white;
+    text-align: left;
+    font-size: 23px;
+}
+
+.card-body {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 10px;
+}
+
+#navbar{
+    background: #48484a;
+}
+
+#particles-js {
+    position: absolute;
+    height: auto;
+    width: 100%;
+    background: #111111;
+}
+
+#ABNavbarLogo {
+    height: 60px;
+    width: 60px;
+    background: #48484a;
+}
+
+h1, h2, h3, h4, h5, h6, p, a {
+    font-family: AspergitRegular;
+    color: white;
+}

@@ -13,7 +13,6 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = AutoSlugField(populate_from='title')
-    #tags = models.ManyToManyField('Tags', blank=True, related_name='posts')
     tgtags = TaggableManager()
 
     def __str__(self):
@@ -40,7 +39,6 @@ class Comment(models.Model):
     comment = models.TextField()
     comment_date_added = models.DateTimeField(default=timezone.now)
     parent = models.ForeignKey('self', null=True, related_name="replies", blank=True, on_delete=models.CASCADE)
-    #slug = models.SlugField(max_length=150)
 
     def __str__(self):
         return self.comment_author.username

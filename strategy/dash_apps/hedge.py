@@ -60,7 +60,6 @@ def display_inputs(n_clicks, children):
                 'index': n_clicks
             },
             type='text',
-            placeholder='Enter a Ticker'
         ),
         dcc.Input(
         id = {
@@ -68,11 +67,12 @@ def display_inputs(n_clicks, children):
                 'index': n_clicks
             },
             type='number',
-            placeholder='Number of Shares',
         )
     ]
 
+    children.append(html.Span(f'Stock {n_clicks+1}: '))
     children.append(new_input[0])
+    children.append(html.Span(f'Numer of Shares {n_clicks+1}: '))
     children.append(new_input[1])
     children.append(html.Br())
     return children

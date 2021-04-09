@@ -4,12 +4,12 @@
 
 {% block content %}
 <h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
-  <a href="{% url 'create' %}" class="btn btn-primary ms-5">Create New Post</a>
+  <a href="{% url 'create' %}" class="btn btn-primary ms-auto">Create New Post</a>
   <hr/>
   <div id="postgrid" class="container"></div>
     <div id="postrow" class="row">
       {% for post in page.object_list %}
-        <div class="card text-center" style="width: 100%; background: none;">
+        <div class="card text-center" style="width: 100%; background: none; border: none;">
           {% if post.coverimg %}
             <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}" class="card-img-top"></a>
           {% else %}
@@ -28,8 +28,9 @@
         </div>
       {% endfor %}
     </div>
+    <br>
     <nav aria-label="Page navigation">
-      <ul class="pagination ms-5">
+      <ul class="pagination ms-auto">
         <li class="page-item">
           <a class="page-link" href="{{ prev_url }}" aria-label="Previous" style="background: #48484a;">
             <span aria-hidden="true" style="color: white;">&laquo;</span>

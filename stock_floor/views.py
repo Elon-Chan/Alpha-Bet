@@ -24,7 +24,12 @@ def post_list(request):
     else:
         posts = Post.objects.all()
 
+    # print(posts)
+
     paginator = Paginator(posts, 6)
+
+    # print(paginator.num_pages)
+
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
 
@@ -83,10 +88,37 @@ class PostDetailView(HitCountDetailView, ListView):
 def TgtagDetailList(request, slug):
         tgtag = Post.objects.filter(tgtags__name__in=[slug])
         tagname = slug
-        
-        
 
-        return render(request, 'stock_floor/tgtag_detail.html', context={'tgtag':tgtag, 'tagname':tagname})
+        paginator = Paginator(tgtag, 6)
+
+        print(paginator.num_pages)
+        print("hello")
+
+        page_number = request.GET.get('page', 1)
+        page = paginator.get_page(page_number)
+
+        print(page)
+
+        if page.has_next():
+            next_url = f'?page={page.next_page_number()}'
+        else:
+            next_url = ''
+
+        if page.has_previous():
+            prev_url = f'?page={page.previous_page_number()}'
+        else:
+            prev_url = ''
+
+        post = Post.objects.order_by('-date_posted')
+        context = {
+            'page':page,
+            'next_url':next_url,
+            'prev_url':prev_url,
+            'tgtag':tgtag,
+            'tagname':tagname,
+        }
+
+        return render(request, 'stock_floor/tgtag_detail.html', context)
 
 class PostCreateView(CreateView):
     model = Post

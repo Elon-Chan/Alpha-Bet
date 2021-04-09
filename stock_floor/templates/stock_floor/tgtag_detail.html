@@ -8,7 +8,7 @@
 
 <div id="postgrid" class="container"></div>
     <div id="postrow" class="row">
-      {% for post in tgtag %}
+      {% for post in page.object_list %}
         <div class="card text-center" style="width: 100%; background: none;">
           {% if post.coverimg %}
             <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}" class="card-img-top"></a>
@@ -28,7 +28,7 @@
         </div>
       {% endfor %}
     </div>
-    <!-- <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation">
       <ul class="pagination ms-5">
         <li class="page-item">
           <a class="page-link" href="{{ prev_url }}" aria-label="Previous" style="background: #48484a;">
@@ -53,6 +53,6 @@
           </a>
         </li>
       </ul>
-    </nav> -->
+    </nav>
   </div>
 {% endblock %}

@@ -6,6 +6,13 @@
 
 {% block content %}
     <h1 class="mt-5" style="font-size: 100px;">{{ post.title }}</h1>
+    <p>
+        <h4>
+            {% for tag in post.tgtags.all %}
+                <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge bg-primary link-light">#{{ tag.name }}</a></span>
+            {% endfor %}
+        </h4>
+    </p>
     <hr>
     {% if post.coverimg %}
         <div class="img text-center">
@@ -20,14 +27,7 @@
             {{ post.content }}
         </div>
     </div>
-    <p>
-        <br>
-        <h4>
-            {% for tag in post.tgtags.all %}
-                <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge bg-primary link-light">#{{ tag.name }}</a></span>
-            {% endfor %}
-        </h4>
-    </p>
+    <br>
     {% if post.author == user %}
         <a id="b1" href="{{ post.get_update_url }}"class="btn btn-primary">Update Your Post</a>
         <a id="b2" href="{{ post.get_delete_url }}"class="btn btn-primary">Delete this Post</a>
@@ -56,7 +56,7 @@
             <div class="form-group">
                 {{ form }}
             </div>
-            <hr/>
+            <br>
             <button class="btn btn-primary" type="submit" style="color:white;">Comment</button>
         </form>
     </div>

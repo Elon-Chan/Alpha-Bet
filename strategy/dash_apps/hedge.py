@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output, State, MATCH, ALL
 import plotly.express as px
 import plotly.graph_objects as go
 
+
 import pandas as pd
 import yfinance as yf
 # django plotly dash
@@ -15,38 +16,56 @@ app = DjangoDash('hedge', add_bootstrap_links=True, external_stylesheets=[dbc.th
 
 def blank_figure():
     fig = go.Figure(go.Scatter(x=[], y = []))
-    fig.update_layout(template = None)
+    fig.update_layout(template = None,
+    margin=dict(
+        l=0,
+        r=0,
+        b=0,
+        t=0),paper_bgcolor = 'rgba(0,0,0,0)',plot_bgcolor = 'rgba(0,0,0,0)')
     fig.update_xaxes(showgrid = False, showticklabels = False, zeroline=False)
     fig.update_yaxes(showgrid = False, showticklabels = False, zeroline=False)
     
     return fig
 
 
-app.layout = html.Div([
-    dbc.Card(
-    [
-        dbc.CardHeader("This is the header"),
-        dbc.CardBody(
-            [
-                html.H4("Card title", className="card-title"),
-                html.P("This is some card text", className="card-text"),
-            ]
+
+app.layout =  html.Div([dbc.Card([
+        dbc.CardHeader([
+                        html.H3("Description of the text",style={'text-align': 'center', 'font-family': 'HaextPlain'}),
+                        html.P("HELLO")]
         ),
-        dbc.CardFooter("This is the footer"),
-    ],
-    style={"width": "18rem"},
-    ),
-    dbc.Card(
-        dbc.CardBody("This is some text within a card body"),
-        className="mb-3",
-    ),
-    html.Button("Add Stock", id="add-stock", n_clicks=0),
-    html.Div(id='input-container', children=[]),
-    html.Div(id='dropdown-container-output'),
-    html.Button("Hedge", id="hedge", n_clicks=0),
-    dcc.Graph(id="pie-chart", figure = blank_figure()),
-    html.Div(id='portfolio-beta')
+        dbc.CardBody([
+            dbc.Card([
+                dbc.CardBody([
+                        dbc.Row([
+                            dbc.Col([html.Div(id='input-container', children=[]),
+                            html.Div(id='dropdown-container-output')],width={"size": 7, "offset": 0}, align="start",),
+                            dbc.Col(),
+                            dbc.Col(),
+                        ]),
+                        dbc.Row([
+                            dbc.Col([html.Button("Add Stock", id="add-stock", n_clicks=0,style={"margin-left": "25px","margin-top": "10px"})],width={"size": 2, "offset": 0}, align="start",),
+                            dbc.Col(),
+                            dbc.Col()
+                        ]),
+                        dbc.Row([
+                            dbc.Col(),
+                            dbc.Col(html.Button("Hedge", id="hedge", n_clicks=0,style={"margin-top": "10px"})),
+                            dbc.Col(),
+                        ])
+                ])
+            ],color="secondary"),
+            dbc.Card([
+                dbc.CardBody([
+                    dcc.Graph(id="pie-chart", figure = blank_figure()),
+                    html.Div(id='portfolio-beta')
+                ])
+            ],color="secondary")
+        ])
+    ],color="secondary"),
 ])
+
+
 
 @app.callback(
     Output('input-container', 'children'),
@@ -60,6 +79,7 @@ def display_inputs(n_clicks, children):
                 'index': n_clicks
             },
             type='text',
+            style={"margin-right": '30px'}
         ),
         dcc.Input(
         id = {
@@ -70,9 +90,9 @@ def display_inputs(n_clicks, children):
         )
     ]
 
-    children.append(html.Span(f'Stock {n_clicks+1}: '))
+    children.append(html.Span(f'Stock {n_clicks + 1}: '))
     children.append(new_input[0])
-    children.append(html.Span(f'Numer of Shares {n_clicks+1}: '))
+    children.append(html.Span(f'Number of Shares: '))
     children.append(new_input[1])
     children.append(html.Br())
     return children
@@ -122,6 +142,8 @@ def generate_chart(n_clicks, stock_tickers, num_shares):
     pull[largest_stock] = 0.3
 
     fig = go.Figure(data=[go.Pie(labels=stock_tickers, values=individual_stock_weight, pull=pull)])
+    fig.update_layout(paper_bgcolor = 'rgba(0,0,0,0)',
+                    plot_bgcolor = 'rgba(0,0,0,0)')
 
     required_size = portfolio_size / 3 * portfolio_beta
     # get inverse instructmetns data

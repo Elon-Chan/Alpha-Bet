@@ -6,6 +6,7 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 from dash_html_components.Div import Div
 import dash_table as dt
+import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State, ALL
 from numpy.lib.function_base import append
 
@@ -29,7 +30,8 @@ import talib
 
 def blank_figure():
     fig = go.Figure(go.Scatter(x=[], y = []))
-    fig.update_layout(template = None)
+    fig.update_layout(template = None, paper_bgcolor = 'rgba(0,0,0,0)',
+                    plot_bgcolor = 'rgba(0,0,0,0)')
     fig.update_xaxes(showgrid = False, showticklabels = False, zeroline=False)
     fig.update_yaxes(showgrid = False, showticklabels = False, zeroline=False)
     
@@ -83,69 +85,167 @@ def compute_strategy_performance(df, buy_technical_indicators, sell_technical_in
 
     return [strategy_return, volatility, mdd, sharpe]
 
-app = DjangoDash('strategy_analyzer')
 
-app.layout = html.Div([
-    html.H1(children="Stock Strategy Analyzer", style={'text-align':'center'}),
-    html.Div(children=[
-        html.P(children="Please Input Your Stock Ticker: ", style={'display': 'inline-block'}),
-        dcc.Input(id='stock-ticker', type='text', value='TSLA', placeholder='TSLA', style={'display': 'inline-block'}),
-        ]),
-    html.Div(children=[
-        html.P(children="Please Choose the Desired Date Range: ", style={'display': 'inline-block'}),
-        dcc.DatePickerRange(
-            id='my-date-picker-range',
-            month_format='D-M-Y',
-            min_date_allowed=date(2010, 1, 1),
-            max_date_allowed=today(),
-            initial_visible_month=date(2021, 1, 1),
-            start_date = date(2021,1,1),
-            end_date=today(),
-            style={'display': 'inline-block'}),
-    ]),
-    
-    html.Div(children=[
-        html.H3(children="If"),
-        dcc.Dropdown(id='buy-strategy-1', 
-            options=dropdown_options,
-            value='MA'),
-        html.Div(id='buy-strategy-1-parameter-container'),
-        html.H3(children="Cross Up"),
-        dcc.Dropdown(id='buy-strategy-2', 
-            options=dropdown_options,
-            value='MA'),
-        html.Div(id='buy-strategy-2-parameter-container'),
-        html.H3(children="Then Buy"),
-    ], style={'width': '25%'}),
+app = DjangoDash('strategy_analyzer', add_bootstrap_links=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app.css.append_css({'external_url': '/assets/style.css'})
 
-    html.Div(children=[
-        html.H3(children="If"),
-        dcc.Dropdown(id='sell-strategy-1', 
-            options=dropdown_options,
-            value='MA'),
-        html.Div(id='sell-strategy-1-parameter-container'),
-        html.H3(children="Cross Up"),
-        dcc.Dropdown(id='sell-strategy-2', 
-            options=dropdown_options,
-            value='MA'),
-        html.Div(id='sell-strategy-2-parameter-container'),
-        html.H3(children="Then Sell"),
-    ], style={'width': '25%'}),
 
-    html.Div(children=[html.Button('Submit', id='submit-val', n_clicks=0)], style={'text-align':'center'}),
-
-    html.Div(id='input-log'), # For information reporting, dev only
-    dcc.Checklist(
-        id='toggle-rangeslider',
-        options=[{'label': 'Include Rangeslider', 
-                    'value': 'slider'}],
-        value=['slider']
+app.layout = html.Div(children=[
+    # title
+    html.H1(children="Stock Strategy Analyzer", style={'text-align': 'center', 'font-family': 'HaextPlain'}),
+    html.H3(children="description", style={'text-align': 'center'}),
+    # linebreak
+    html.Br(),
+    dbc.Row(
+        [
+            # input ticker
+            dbc.Col(
+                html.Div(children=[
+                    html.P(children="Please Input Your Stock Ticker: ", style={'display': 'inline-block'}),
+                    dcc.Input(id='stock-ticker', type='text', value='TSLA', placeholder='TSLA', style={'display': 'inline-block'}),
+                ]),
+                width={"order": "first"},
+            ),
+            # input date
+            dbc.Col(
+                html.Div(children=[
+                    html.P(children="Please Choose the Desired Date Range: ", style={'display': 'inline-block'}),
+                    dcc.DatePickerRange(
+                        id='my-date-picker-range',
+                        month_format='D-M-Y',
+                        min_date_allowed=date(2010, 1, 1),
+                        max_date_allowed=today(),
+                        initial_visible_month=date(2021, 1, 1),
+                        start_date=date(2021, 1, 1),
+                        end_date=today(),
+                        style={'display': 'inline-block'}),
+                ]),
+                width={"order": "last"},
+            ),
+        ],
+        style={"text-align": "center"},
     ),
-    dcc.Graph(id="graph", figure=blank_figure()),
 
-    html.Div(children=[
-        html.H4(children='Performance Report'),
-        html.Table(
+    html.Br(),
+
+    # card deck
+    dbc.CardDeck([
+        dbc.Card([
+            dbc.CardHeader([html.H2(children="Buy")]),
+            dbc.CardBody([
+                html.H3(children="If"),
+                dcc.Dropdown(id='buy-strategy-1',
+                                options=dropdown_options,
+                                value='MA',
+                                style={"color": "#000"}),
+                html.Div(id='buy-strategy-1-parameter-container'),
+                html.H3(children="Cross Up"),
+                dcc.Dropdown(id='buy-strategy-2',
+                                options=dropdown_options,
+                                value='MA',
+                                style={"color": "#000"}),
+                html.Div(id='buy-strategy-2-parameter-container'),
+            ]),
+        ],
+            style={"width": "30rem"},
+            color="#5c5c5c",
+            inverse=True,
+            className="w-50",
+        ),
+        dbc.Card([
+            dbc.CardHeader([html.H2(children="Sell")]),
+            dbc.CardBody([
+                html.H3(children="If"),
+                dcc.Dropdown(id='sell-strategy-1',
+                                options=dropdown_options,
+                                value='MA',
+                                style={"color": "#000"}),
+                html.Div(id='sell-strategy-1-parameter-container'),
+                html.H3(children="Cross Up"),
+                dcc.Dropdown(id='sell-strategy-2',
+                                options=dropdown_options,
+                                value='MA',
+                                style={"color": "#000"}),
+                html.Div(id='sell-strategy-2-parameter-container'),
+            ]),
+        ],
+            style={"width": "30rem"},
+            color="#5c5c5c",
+            inverse=True,
+            className="w-50",
+        ),
+    ]),
+
+    # linebreak
+    html.Br(),
+
+    # submit button
+    html.Div(
+        children=[html.Button(
+            'Analyze', id='submit-val',
+            n_clicks=0,
+            style={
+                "font-size": "25px",
+                "padding": "5px 80px",
+                "border-radius": "6px",
+                'font-family': 'HaextPlain',
+                'background-color': '#757575',
+                'color': 'white',
+                'font-weight': 'bold'
+            }
+        )],
+        style={'text-align': 'center'}
+    ),
+
+    # linebreak
+    html.Br(),
+
+    # For information reporting, dev only
+    html.Div(id='input-log'),
+
+    # result
+    html.Div([
+        dbc.Card(
+            dbc.CardHeader(
+                html.H3("Trend")
+            ),
+            color="#5c5c5c",
+            inverse=True,
+        ),
+        dbc.Card(
+            dbc.CardBody(
+                dcc.Graph(id="graph", figure=blank_figure()),
+            ),
+            color="#5c5c5c",
+            inverse=True,
+        ),
+        dbc.Card(
+            dbc.CardHeader(
+                dcc.Checklist(
+                    id='toggle-rangeslider',
+                    options=[{'label': 'Include Rangeslider', 'value': 'slider'}],
+                    value=['slider']
+                ),
+            ),
+            color="#5c5c5c",
+            inverse=True,
+        ),
+    ]),
+
+    # linebreak
+    html.Br(),
+
+    # performance report
+    dbc.Card(
+            dbc.CardHeader(
+                html.H3("Performance Report")
+            ),
+            color="#5c5c5c",
+            inverse=True,
+    ),
+    dbc.Card(
+            dbc.CardBody(
+                html.Table(
             children=[
                 html.Tr(children=[
                     html.Th(),
@@ -169,9 +269,12 @@ app.layout = html.Div([
                     html.Td(id='Sharpe Ratio', children=[]),
                 ]),
             ]
-        )
-    ],
+            )
+            ),
+            color="#5c5c5c",
+            inverse=True,
     ),
+
     dcc.Graph(id="radar", figure=blank_figure()),
 ])
 
@@ -233,7 +336,8 @@ def display_graph(n_clicks, slider, ticker, start_date, end_date, buy_strategy_1
             low=df['Low'], close=df['Close'], name='Price'),
         secondary_y=False)
 
-    fig.update_layout(xaxis_rangeslider_visible='slider' in slider)
+    fig.update_layout(xaxis_rangeslider_visible='slider' in slider, paper_bgcolor = 'rgba(0,0,0,0)',
+                    plot_bgcolor = 'rgba(0,0,0,0)')
 
     categories = ['Return', 'Volatility', 'Maximum Drawdown', 'Sharpe Ratio']
     radar = go.Figure()
@@ -264,8 +368,6 @@ def display_graph(n_clicks, slider, ticker, start_date, end_date, buy_strategy_1
 
     
     return [debug_log, fig, bnh_performance[0], bnh_performance[1], bnh_performance[2], bnh_performance[3], strategy_performance[0], strategy_performance[1], strategy_performance[2], strategy_performance[3], radar]
-
-
 
 @app.callback(
     [

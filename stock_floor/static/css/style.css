@@ -24,11 +24,16 @@
     color: white;
 }
 
+#postgrid {
+    width: 200%;
+}
+
 #postrow {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
-    grid-gap: 135px;
-    padding: 10px;
+    grid-template-columns: auto auto auto;
+    grid-gap: 50px;
+    margin-left: -3cm;
+    margin-right: -3cm;
 }
 
 #cardimg {
@@ -101,7 +106,7 @@
     background: #48484a;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, hr {
     font-family: AspergitRegular;
     color: white;
 }
@@ -113,4 +118,9 @@ a {
 div.navbar-collapse ul.navbar-nav li {
     font-family: HaextPlain;
     font-size: 20px;
+    color: white;
+}
+
+nav-link {
+    color: white;
 }

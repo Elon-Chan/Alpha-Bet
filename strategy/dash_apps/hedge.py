@@ -1,22 +1,50 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State, MATCH, ALL
 import plotly.express as px
+import plotly.graph_objects as go
 
 import pandas as pd
 import yfinance as yf
 # django plotly dash
 from django_plotly_dash import DjangoDash
 
-app = DjangoDash('hedge')
+app = DjangoDash('hedge', add_bootstrap_links=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+def blank_figure():
+    fig = go.Figure(go.Scatter(x=[], y = []))
+    fig.update_layout(template = None)
+    fig.update_xaxes(showgrid = False, showticklabels = False, zeroline=False)
+    fig.update_yaxes(showgrid = False, showticklabels = False, zeroline=False)
+    
+    return fig
+
 
 app.layout = html.Div([
+    dbc.Card(
+    [
+        dbc.CardHeader("This is the header"),
+        dbc.CardBody(
+            [
+                html.H4("Card title", className="card-title"),
+                html.P("This is some card text", className="card-text"),
+            ]
+        ),
+        dbc.CardFooter("This is the footer"),
+    ],
+    style={"width": "18rem"},
+    ),
+    dbc.Card(
+        dbc.CardBody("This is some text within a card body"),
+        className="mb-3",
+    ),
     html.Button("Add Stock", id="add-stock", n_clicks=0),
     html.Div(id='input-container', children=[]),
     html.Div(id='dropdown-container-output'),
     html.Button("Hedge", id="hedge", n_clicks=0),
-    dcc.Graph(id="pie-chart"),
+    dcc.Graph(id="pie-chart", figure = blank_figure()),
     html.Div(id='portfolio-beta')
 ])
 
@@ -88,7 +116,12 @@ def generate_chart(n_clicks, stock_tickers, num_shares):
     portfolio_beta = sum([x * y for (x, y) in zip(stock_beta, individual_stock_weight)])
     print(portfolio_beta)
     df = pd.DataFrame(data=list(zip(stock_tickers, individual_stock_weight)), columns=['Tickers', 'Weight'])
-    fig = px.pie(df, values=individual_stock_weight, names=stock_tickers, title='Your Portfolio Formation')
+    
+    pull = [0.1] * len(df)
+    largest_stock = df['Weight'].idxmax()
+    pull[largest_stock] = 0.3
+
+    fig = go.Figure(data=[go.Pie(labels=stock_tickers, values=individual_stock_weight, pull=pull)])
 
     required_size = portfolio_size / 3 * portfolio_beta
     # get inverse instructmetns data

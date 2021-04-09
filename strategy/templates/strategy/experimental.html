@@ -1,0 +1,11 @@
+{% extends "stock_floor/base.html" %}
+
+{% block title %}Stock Floor{% endblock %}
+
+{% block content %}
+
+{%load plotly_dash%}
+
+{%plotly_app name="experimental" ratio=0.85%}
+
+{% endblock %}

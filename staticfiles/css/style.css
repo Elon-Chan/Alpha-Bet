@@ -1,0 +1,48 @@
+@font-face {
+    font-family: HaextPlain;
+    src: url(HaextPlain.otf);
+}
+
+@font-face {
+    font-family: AspergitRegular;
+    src: url(AspergitRegular.otf);
+}
+
+body {
+    z-index: -1;
+    height: 100%;
+    background: #1A1A2E;
+}
+h1 {
+    font-family: HaextPlain;
+    color: white;
+}
+
+h2, h3, h4, h5, h6, h7, p {
+    font-family: AspergitRegular;
+    color: white;
+}
+
+#Comments, #CM_Form, #Post_Update_Form, #postlist_tags {
+    font-family: AspergitRegular;
+    color: white;
+}
+#particles-js {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #1A1A2E;
+}
+
+#img1 {
+    width: 50%;
+    height: auto;
+}
+
+#img2 {
+    height: 10%;
+}
+
+/* textarea[type=textarea] {
+    font-family: AspergitRegular;
+} */

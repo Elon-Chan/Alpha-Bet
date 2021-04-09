@@ -1,0 +1,13 @@
+{% extends 'stock_floor/base.html' %}
+
+{% block title %}Delete {{ post.title }} ?{% endblock %}
+
+{% block content %}
+    <h1 class="mt-5">Really want to  delete {{ post.title }} ?</h1>
+    <form action="{{ post.get_delete_url }}" method="POST">
+        {% csrf_token %}
+
+        <a href="{{ post.get_absolute_url }}" class="btn btn-primary"> Cancel</a>
+        <button type="submit" name="button" class="btn btn-danger">Delete</button>
+    </form>
+{% endblock %}

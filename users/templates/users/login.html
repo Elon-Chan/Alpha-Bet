@@ -1,0 +1,40 @@
+{% extends "stock_floor/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<div id="loginpage" class="d-flex align-items-center justify-content-center" style="height: 50rem;">
+    <div class="align-middle" style="font-size: 22px;">
+        <h1>Log In</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset>
+                {{ form.as_p }}
+            </fieldset>
+            <div class="grid">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary" type="submit" style="font-family: AspergitRegular;">
+                            Log In
+                        </button>
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <small style="color: white; font-family: AspergitRegular; font-size: 14px;" >
+                                Need an account? <a href="{% url 'register' %}">Sign Up Now</a>
+                            </small>
+                        </div>
+                        <div class="row">
+                            <small style="color: white; font-family: AspergitRegular; font-size: 14px;" >
+                                Forget password? <a href="{% url 'password_reset' %}">Reset Password</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    
+{% endblock content %}

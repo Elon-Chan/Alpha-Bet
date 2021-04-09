@@ -1,0 +1,11 @@
+{% extends "stock_floor/base.html" %}
+
+{% block title %}Hedge{% endblock %}
+
+{% block content %}
+
+{%load plotly_dash%}
+
+{%plotly_app name="hedge" ratio=0.85%}
+
+{% endblock %}

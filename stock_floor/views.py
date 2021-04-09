@@ -83,11 +83,14 @@ class PostDetailView(HitCountDetailView, ListView):
 def TgtagDetailList(request, slug):
         tgtag = Post.objects.filter(tgtags__name__in=[slug])
         tagname = slug
+        
+        
+
         return render(request, 'stock_floor/tgtag_detail.html', context={'tgtag':tgtag, 'tagname':tagname})
 
 class PostCreateView(CreateView):
     model = Post
-    fields = ['title', 'content', 'tgtags']
+    fields = ['title', 'content', 'tgtags', 'coverimg']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -103,13 +106,29 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
 
     def post(self, request, slug):
         post = get_object_or_404(Post, slug__iexact=slug)
-        bound_form = PostCreateForm(request.POST, instance=post)
+        bound_form = PostCreateForm(request.POST, request.FILES, instance=post)
 
         if bound_form.is_valid():
             new_post = bound_form.save()
             return redirect(new_post)
         
         return render(request, 'stock_floor/post_update.html', context={'form':bound_form, 'post':post})
+
+    # def updateimage(request, slug):
+    #     post = Post.objects.get(slug__iexact=slug)
+    #     oldImagePath = post.coverimg
+    #     form = PostCreateForm(request.POST, request.FILES, instance=oldImagePath)
+
+    #     if form.is_valid():
+    #         image_path = oldImagePath
+    #         if os.path.exists(image_path):
+    #             os.remove(image_path)
+
+    #         form.save()
+    #         return redirect(new_post)
+    #     else:
+    #         context = {'coverimg': oldImagePath, 'form': form}
+    #         return render(request, 'stock_floor/post_update.html', context)
 
     def test_func(self):
         post = self.get_object()

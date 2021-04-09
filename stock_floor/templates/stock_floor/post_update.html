@@ -5,15 +5,16 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
-<div id="Post_Update_Form">
+<div id="Post_Update_Form" class="content-section">
     <h1>Edit your Post</h1>
-    <form action="{{ post.get_update_url }}" method="POST">
+    <form action="{{ post.get_update_url }}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Post details</legend>
             {{ form|crispy }}
         </fieldset>
         <div class="form-group">
+            <br>
             <button class="btn btn-primary" type="submit">Update Post</button>
         </div>
     </form>

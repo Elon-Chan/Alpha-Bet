@@ -14,7 +14,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = AutoSlugField(populate_from='title')
     tgtags = TaggableManager()
-    coverimg = models.ImageField(default='Alphabet_Design_3.png', upload_to = 'static/img/')
+    coverimg = models.ImageField(blank=True, null=True, upload_to = 'img/')
 
     def __str__(self):
         return self.title

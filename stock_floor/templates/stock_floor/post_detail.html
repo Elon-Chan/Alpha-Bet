@@ -6,6 +6,7 @@
 
 {% block content %}
     <h1 class="mt-5" style="font-size: 100px;">{{ post.title }}</h1>
+    {{ post.coverimg }}
     <h3 style="font-size: 30px;">{{ post.author }}</h3>
     <h3 style="font-size: 20px;">{% localtime on %} {{ post.date_posted|date:"F d, Y" }} {% endlocaltime %}</h3>
     <div id="postcard" class="card">
@@ -15,9 +16,11 @@
     </div>
     <p>
         <br/>
-        {% for tag in post.tgtags.all %}
-            <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge bg-primary link-light">#{{ tag.name }}</a></span>
-        {% endfor %}
+        <h4>
+            {% for tag in post.tgtags.all %}
+                <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge bg-primary link-light">#{{ tag.name }}</a></span>
+            {% endfor %}
+        </h4>
     </p>
     {% if post.author == user %}
         <a id="b1" href="{{ post.get_update_url }}"class="btn btn-primary">Update Your Post</a>

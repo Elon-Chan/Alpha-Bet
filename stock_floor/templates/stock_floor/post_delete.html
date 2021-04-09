@@ -3,6 +3,7 @@
 {% block title %}Delete {{ post.title }} ?{% endblock %}
 
 {% block content %}
+<h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
     <h1 class="mt-5">Really want to  delete {{ post.title }} ?</h1>
     <form action="{{ post.get_delete_url }}" method="POST">
         {% csrf_token %}

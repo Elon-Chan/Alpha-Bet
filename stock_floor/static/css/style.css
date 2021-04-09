@@ -37,10 +37,9 @@
 }
 
 #postcard {
-    margin: 0 auto;
     color: white;
     background-color: #48484a;
-    width: 50%;
+    width: 100%;
 }
 
 #postcardBody {

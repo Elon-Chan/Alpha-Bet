@@ -3,11 +3,58 @@
 {% block title %}Post with ""{% endblock %}
 
 {% block content %}
-    <h1 class="mt-5" style="color:white;">Post with "{{ tagname }}" tag</h1>
-    <p>
-        {% for post in tgtag %}
-            <a href="{{ post.get_absolute_url }}">{{ post }}</a>
-            <br/>
+<h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
+<h1 class="ms-5" style="color:white;">Post with "{{ tagname }}" tag</h1>
+
+<div id="postgrid" class="container"></div>
+    <div id="postrow" class="row">
+      {% for post in tgtag %}
+      <div class="card-body">
+        <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="/static/img/Alphabet_Design_3.png" class="card-img-top"></a>
+        <h3 class="card-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+        <p class="card-text lead" >{{ post.content | truncatewords:3 }}...</p>
+        <h5>{{ post.author }}  {{ post.date_posted|date:"F d, Y" }}</h5>
+        <h5>
+          {% for tgtags in post.tgtags.all %}
+            <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary" id="postlist_tags">#{{ tgtags }} </a></span>
+          {% endfor %}
+        </h5>  
+        
+      </div>
+      {% endfor %}
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination ms-5">
+        <li class="page-item">
+          <a class="page-link" href="{{ prev_url }}" aria-label="Previous" style="background: #48484a;">
+            <span aria-hidden="true" style="color: white;">&laquo;</span>
+          </a>
+        </li>
+  
+        {% for n in page.paginator.page_range %}
+          {% if page.number == n %}
+              <li class="page-item active" aria-current="page">
+                  <a href="?page={{ n }}" class="page-link">{{ n }}</a>
+              </li>
+          {% else %}
+              <li class="page-item">
+                  <a href="?page={{ n }}" class="page-link">{{ n }}</a>
+              </li>
+          {% endif %}
         {% endfor %}
-    </p>
+        <li class="page-item">
+          <a class="page-link" href="{{ next_url }}" aria-label="Next" style="background: #48484a;">
+            <span aria-hidden="true" style="color: white;">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+<!-- <p>
+    {% for post in tgtag %}
+        <a href="{{ post.get_absolute_url }}">{{ post }}</a>
+        <br/>
+    {% endfor %}
+</p> -->
 {% endblock %}

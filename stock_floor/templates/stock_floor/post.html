@@ -14,9 +14,12 @@
         <h3 class="card-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
         <p class="card-text lead" >{{ post.content | truncatewords:3 }}...</p>
         <h5>{{ post.author }}  {{ post.date_posted|date:"F d, Y" }}</h5>
+        <h5>
           {% for tgtags in post.tgtags.all %}
             <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary" id="postlist_tags">#{{ tgtags }} </a></span>
           {% endfor %}
+        </h5>  
+        
       </div>
       {% endfor %}
     </div>

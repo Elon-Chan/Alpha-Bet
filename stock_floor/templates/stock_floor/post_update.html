@@ -4,6 +4,7 @@
 
 {% load crispy_forms_tags %}
 {% block content %}
+<h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
 <div id="Post_Update_Form">
     <h1>Edit your Post</h1>
     <form action="{{ post.get_update_url }}" method="POST">
@@ -13,7 +14,7 @@
             {{ form|crispy }}
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-primary" type="submit">Update Post</button>
+            <button class="btn btn-primary" type="submit">Update Post</button>
         </div>
     </form>
 </div>

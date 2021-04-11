@@ -1,0 +1,21 @@
+{% extends "stock_floor/base.html" %}
+
+{% block title %}Edit Your Profile{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
+<div id="CM_Form" class="content-section">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <br>
+            <button class="btn btn-primary" type="submit">Edit</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

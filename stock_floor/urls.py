@@ -1,5 +1,4 @@
 from django.urls import path
-
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import (
@@ -15,6 +14,7 @@ from . import views
 
 urlpatterns = [
     path('', mainpage, name='stockfloor_blog'),
+    path('stockfloor/', post_list, name='stockfloor_postlist'),
     path('stockfloor/', post_list, name='stockfloor_postlist'),
     path('stockfloor/post/<str:slug>/', PostDetailView.as_view(), name='stockfloor_postdetail'),
     path('stockfloor/tgtags/<str:slug>', TgtagDetailList, name='stockfloor_tgtagsdetail'),

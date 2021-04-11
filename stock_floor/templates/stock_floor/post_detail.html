@@ -13,14 +13,14 @@
             {% endfor %}
         </h4>
     </p>
-    <hr>
     {% if post.coverimg %}
+        <hr>
         <div class="img text-center">
             <img id="coverimg" src="{{ post.coverimg.url }}" height="540px">
         </div>
+        <hr>
     {% endif %}
-    <hr>
-    <h3 style="font-size: 30px;">{{ post.author }}</h3>
+    <h3 style="font-size: 30px;"><a href="{% url 'profile' pk=post.author.id %}">{{ post.author }}</a></h3>
     <h3 style="font-size: 20px;">{% localtime on %} {{ post.date_posted|date:"F d, Y" }} {% endlocaltime %}</h3>
     <div id="postcard" class="card">
         <div id="postcardBody" class="card-body text-start ms-2" style="font-size: 20px;">
@@ -39,8 +39,9 @@
     {% else %}
         {% for comment in comment %}
         <div id="Comments" class="card">
-            <div class="card-body ms-3">
-                {{ comment.comment_author }} - {% localtime on %} {{ comment.comment_date_added }} {% endlocaltime %}
+            <img class="text-start" height="50px" width="50px" src="../../../mediafiles/{{comment.comment_author.profile.profile_picture}}">
+            <div class="card-body text-start ms-3">
+                <a href="{% url 'profile' pk=comment.comment_author.id %}">{{ comment.comment_author }}</a> - {% localtime on %} {{ comment.comment_date_added }} {% endlocaltime %}
                 <br/>
                 {{ comment.comment }}
                 <br/>

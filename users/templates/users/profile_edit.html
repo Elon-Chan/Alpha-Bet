@@ -1,0 +1,21 @@
+{% extends "stock_floor/base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>{{ user.username }}</h1>
+    <div class="card" style="background-color: #48484a;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group" style="color: white;">
+                {{ form|crispy }}
+            </fieldset>
+            <br>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

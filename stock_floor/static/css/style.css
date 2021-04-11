@@ -124,3 +124,7 @@ div.navbar-collapse ul.navbar-nav li {
 nav-link {
     color: white;
 }
+
+nav .navbar-nav li a{
+    color: white !important;
+}

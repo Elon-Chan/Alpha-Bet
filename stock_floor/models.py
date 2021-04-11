@@ -32,7 +32,7 @@ class Post(models.Model):
         return self.tgtags.name
 
     class Meta:
-        ordering = ['title']
+        ordering = ['-date_posted']
 
 class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)

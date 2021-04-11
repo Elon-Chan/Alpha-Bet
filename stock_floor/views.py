@@ -17,18 +17,13 @@ def mainpage(request):
 
 @login_required
 def post_list(request):
-
     search_query = request.GET.get('search', '')
     if search_query:
         posts = Post.objects.filter(Q(title__icontains=search_query) | Q(content__icontains=search_query))
     else:
         posts = Post.objects.all()
 
-    # print(posts)
-
     paginator = Paginator(posts, 6)
-
-    # print(paginator.num_pages)
 
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
@@ -42,13 +37,13 @@ def post_list(request):
         prev_url = f'?page={page.previous_page_number()}'
     else:
         prev_url = ''
-
-    post = Post.objects.order_by('-date_posted')
+        
     context = {
         'page':page,
         'next_url':next_url,
         'prev_url':prev_url,
     }
+    ordering = ['-date_posted']
     return render(request, 'stock_floor/post.html', context)
 
 class PostDetailView(HitCountDetailView, ListView):
@@ -90,14 +85,8 @@ def TgtagDetailList(request, slug):
         tagname = slug
 
         paginator = Paginator(tgtag, 6)
-
-        print(paginator.num_pages)
-        print("hello")
-
         page_number = request.GET.get('page', 1)
         page = paginator.get_page(page_number)
-
-        print(page)
 
         if page.has_next():
             next_url = f'?page={page.next_page_number()}'
@@ -108,8 +97,7 @@ def TgtagDetailList(request, slug):
             prev_url = f'?page={page.previous_page_number()}'
         else:
             prev_url = ''
-
-        post = Post.objects.order_by('-date_posted')
+            
         context = {
             'page':page,
             'next_url':next_url,
@@ -145,22 +133,6 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
             return redirect(new_post)
         
         return render(request, 'stock_floor/post_update.html', context={'form':bound_form, 'post':post})
-
-    # def updateimage(request, slug):
-    #     post = Post.objects.get(slug__iexact=slug)
-    #     oldImagePath = post.coverimg
-    #     form = PostCreateForm(request.POST, request.FILES, instance=oldImagePath)
-
-    #     if form.is_valid():
-    #         image_path = oldImagePath
-    #         if os.path.exists(image_path):
-    #             os.remove(image_path)
-
-    #         form.save()
-    #         return redirect(new_post)
-    #     else:
-    #         context = {'coverimg': oldImagePath, 'form': form}
-    #         return render(request, 'stock_floor/post_update.html', context)
 
     def test_func(self):
         post = self.get_object()

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, EditProfileForm, CreateProfileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -11,6 +11,12 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.views import generic
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from .models import Profile
+from stock_floor.models import Post
+from django.core.paginator import Paginator
 
 UserModel = get_user_model()
 
@@ -41,8 +47,34 @@ def register(request):
     return render(request, "users/register.html", {'form': form})
 
 @login_required
-def profile(request):
-    return render(request, 'users/profile.html')
+def profile(request, pk):
+    posts = Post.objects.filter(author=pk)
+    post_author = User.objects.get(id=pk)
+    print(post_author)
+
+    paginator = Paginator(posts, 6)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+
+    if page.has_next():
+        next_url = f'?page={page.next_page_number()}'
+    else:
+        next_url = ''
+
+    if page.has_previous():
+        prev_url = f'?page={page.previous_page_number()}'
+    else:
+        prev_url = ''
+
+    post = Post.objects.order_by('-date_posted')
+    context = {
+        'page':page,
+        'next_url':next_url,
+        'prev_url':prev_url,
+        'posts':posts,
+        'post_author':post_author,
+    }
+    return render(request, 'users/profile.html', context)
 
 def activate_done(request):
     return render(request, "users/activate_done.html")
@@ -62,3 +94,27 @@ def activate(request, uidb64, token):
         return render(request, "users/activate_complete.html")
     else:
         return HttpResponse('Activation link is invalid!')
+
+class UserEditView(generic.CreateView):
+    form_class = EditProfileForm
+    template_name = 'users/profile_edit.html'
+    success_url = reverse_lazy('profile')
+    model = Profile
+
+    def get_object(self):
+        return self.request.user
+
+class EditProfilePageView(generic.UpdateView):
+    model = Profile
+    template_name = 'users/profile_edit.html'
+    success_url = reverse_lazy('profile')
+    fields = ['profile_picture']
+
+class CreateProfileView(CreateView):
+    model = Profile
+    form_class = CreateProfileForm
+    template_name = 'users/profile_create.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)

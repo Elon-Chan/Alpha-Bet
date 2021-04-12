@@ -1,0 +1,77 @@
+{% extends "stock_floor/base.html" %}
+
+{% block content %}
+  <h1 class="account-heading" style="font-size: 100px;">{{ author }}</h1>
+  {% if author.profile.profile_picture %}
+    <div class="img text-start">
+      <img id="profile_picture" class="rounded-circle" src="{{ author.profile.profile_picture.url }}" height="150px">
+    </div>
+    <br>
+  {% endif %}
+  {% if author.email %}
+    <h4>User email is: {{ author.email }}</h4>
+  {% else %}
+    <h4>User have not set email yet!</h4>
+  {% endif %}
+<hr>
+<h2>Posts:</h2>
+  {% if page.object_list %}
+    <div id="postgrid" class="container"></div>
+      <div id="postrow" class="row">
+        {% for post in page.object_list %}
+          <div id="cards" class="card text-center">
+            {% if post.coverimg %}
+              <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}" class="card-img-top"></a>
+            {% else %}
+              <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="/static/img/Alphabet_Design_3.png" class="card-img-top"></a>
+            {% endif %}
+            <div class="card-body">
+              <h3 class="card-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+              <p class="card-text lead" >{{ post.content | truncatewords:3 }}...</p>
+              <h5><a href="{% url 'profile' pk=post.author.id %}">{{ post.author }}</a> {{ post.date_posted|date:"F d, Y" }}</h5>
+              <h5>
+                {% for tgtags in post.tgtags.all %}
+                  <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary" id="postlist_tags">#{{ tgtags }} </a></span>
+                {% endfor %}
+              </h5>  
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <br>
+    {% elif author.id == user.id %}
+      <h2>You do not have any post.</h2>
+    {% else %}
+      <h2>The user does not have any post.</h2>
+    {% endif %}
+
+    {% if posts.count > 6 %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination ms-auto">
+          <li class="page-item">
+            <a class="page-link" href="{{ prev_url }}" aria-label="Previous" style="background: #48484a;">
+              <span aria-hidden="true" style="color: white;">&laquo;</span>
+            </a>
+          </li>
+    
+          {% for n in page.paginator.page_range %}
+            {% if page.number == n %}
+            <li class="page-item active" aria-current="page">
+                <a href="?page={{ n }}" class="page-link">{{ n }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a href="?page={{ n }}" class="page-link">{{ n }}</a>
+            </li>
+            {% endif %}
+          {% endfor %}
+          <li class="page-item">
+            <a class="page-link" href="{{ next_url }}" aria-label="Next" style="background: #48484a;">
+              <span aria-hidden="true" style="color: white;">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+{% endblock content %}

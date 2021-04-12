@@ -1,0 +1,79 @@
+{% extends 'stock_floor/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+{% load tz %}
+{% get_current_timezone as TIME_ZONE %}
+
+{% block content %}
+    <h1 class="mt-5" style="font-size: 100px;">{{ post.title }}</h1>
+    <p>
+        <h4>
+            {% for tag in post.tgtags.all %}
+                <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tag %}" class="badge bg-primary link-light">#{{ tag.name }}</a></span>
+            {% endfor %}
+        </h4>
+    </p>
+    <div id="postcontent" class="container">
+        <div class="row">
+            <span><a href="{% url 'profile' pk=post.author.id %}"><img id="postauthorimg" class="rounded-circle" src="../../../mediafiles/{{post.author.profile.profile_picture}}"></a>
+                <span id="postauthor">
+                    <a href="{% url 'profile' pk=post.author.id %}">{{ post.author }}</a>
+                </span>
+            </span>
+        </div>
+        
+        <div id="postdate" class="row"> -{% localtime on %} {{ post.date_posted|date:"M j,y h:i a" }} {% endlocaltime %}</div>
+    </div>
+    {% if post.coverimg %}
+        <hr>
+        <div class="img text-center">
+            <img id="coverimg" src="{{ post.coverimg.url }}" height="540px">
+        </div>
+        <hr>
+    {% else %}
+        <hr>
+    {% endif %}
+    
+    <div id="postcard" class="card">
+        <div id="postcardBody" class="card-body  text-start ms-2" style="font-size: 20px;">
+            {{ post.content }}
+        </div>
+    </div>
+    {% if post.author == user %}
+        <br>
+        <a id="b1" href="{{ post.get_update_url }}"class="btn btn-primary">Update Your Post</a>
+        <a id="b2" href="{{ post.get_delete_url }}"class="btn btn-primary">Delete this Post</a>
+    {% endif %}
+    <hr/>
+    <h2>Comments</h2>
+    {% if not comment %}
+        <h5>No Comments Yet...</h5>
+    {% else %}
+        {% for comment in comment %}
+        <div id="Comments" class="container">
+            <div class="row">
+                <div class="col-auto">
+                    <a href="{% url 'profile' pk=comment.comment_author.id %}"><img id="postcommentimg" class="rounded-circle" src="../../../mediafiles/{{comment.comment_author.profile.profile_picture}}"></a>
+                    <span id="postcommentauthor"><a href="{% url 'profile' pk=comment.comment_author.id %}">{{ comment.comment_author }}</a><span id="postcommentdate"> -{% localtime on %} {{ comment.comment_date_added|date:"M j,y h:i a" }} {% endlocaltime %}</span></span>
+                </div>
+            </div>
+            <div class="card-body text-start">
+                <div id="commentcontent" class="ms-4 mb-1">
+                    {{ comment.comment }}
+                </div>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+    {% endif %}
+    <div id="Comment_Form" class="mb-5">
+        <form action="{% url 'stockfloor_postdetail' slug=post.slug %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form }}
+            </div>
+            <br>
+            <button class="btn btn-primary" type="submit" style="color:white;">Comment</button>
+        </form>
+    </div>
+{% endblock %}

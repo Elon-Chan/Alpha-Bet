@@ -142,7 +142,7 @@ STATICFILES_DIRS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'stockfloor_postlist'
+LOGIN_REDIRECT_URL = 'stockfloor_portal'
 
 LOGIN_URL = 'login'
 

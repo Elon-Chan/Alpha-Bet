@@ -2,6 +2,7 @@
 
 {%  load static %}
 
+{% load crispy_forms_tags %}
 {% block title %}Stock Floor{% endblock %}
 
 {% block content %}
@@ -10,45 +11,61 @@
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
-        <div class="col-xl-9 mx-auto">
-          <h1 id="slogen" class="mb-5">Let's improve your investment portfolio!!!</h1>
-                 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/C-770uuFILM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        
-    </div>
+            <div class="col-xl-9 mx-auto">
+                <h1 id="slogen" class="mb-5">Let's improve your investment portfolio!!!</h1>
+            </div>
+      </div>
+   </div>
   </header>
 
-  <!-- Icons Grid -->
-  
-    <div class="container">
-      <div id="landingrow" class="row">
-        <div class="col-lg-4">
-          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-            <div class="features-icons-icon d-flex">
-              <i class="icon-screen-desktop m-auto text-primary"></i>
+
+
+   <div class="row" >
+
+
+       <div class="col-md-7 " >
+        <h1>&nbsp;</h1>
+        <h1>&nbsp;</h1>
+        <h1 id="slogen" class="mb-5"> fuck you </h1>
+                    
+                     
+
+       </div>
+
+
+
+       <div class="col-md-5 ">
+         <div class="card text-white bg-dark mb-5 offset-l2" id="slogen" style="width: 100%">
+        <div class="card-header"   style="font-size: 23px;">Sign Up</div>
+        <div class="card-body">
+            <div class="col d-flex justify-content-center">
+            <div class="content-section"style="width: 70%;font-size: 20px"  >
+                <form method="POST">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4" >Join Today</legend>
+                        {{ form|crispy }}
+                        <p style="color:rgb(236, 69, 69)">*Please register with your own email since email verification is required</p>
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">Sign Up</button>
+                    </div>
+                </form>
+                <div class="border-top pt-3">
+                    <small class="text-muted">
+                        Already Have An Account? <a class="ml-2" href="#">Sign In</a>
+                    </small>
+                </div>
             </div>
-            <h3>Stock Floor</h3>
-            <p class="lead mb-0">You can discuss and share your favourite trending stock and newly founded trading strategy in your strategy analyzer.</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-            <div class="features-icons-icon d-flex">
-              <i class="icon-layers m-auto text-primary"></i>
             </div>
-            <h3>Strategy Analyzer</h3>
-            <p class="lead mb-0">Providing the graph according to different filters and stock.</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-            <div class="features-icons-icon d-flex">
-              <i class="icon-check m-auto text-primary"></i>
-            </div>
-            <h3>Easy to Use</h3>
-            <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
-          </div>
         </div>
       </div>
     </div>
+
+
+
+
+   </div>
+
+
 {% endblock content %}

@@ -23,7 +23,6 @@ UserModel = get_user_model()
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
-        # print(form.errors.as_data())
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
@@ -49,8 +48,7 @@ def register(request):
 @login_required
 def profile(request, pk):
     posts = Post.objects.filter(author=pk)
-    post_author = User.objects.get(id=pk)
-    print(post_author)
+    author = User.objects.get(id=pk)
 
     paginator = Paginator(posts, 6)
     page_number = request.GET.get('page', 1)
@@ -72,7 +70,7 @@ def profile(request, pk):
         'next_url':next_url,
         'prev_url':prev_url,
         'posts':posts,
-        'post_author':post_author,
+        'author':author,
     }
     return render(request, 'users/profile.html', context)
 
@@ -95,20 +93,15 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-class UserEditView(generic.CreateView):
-    form_class = EditProfileForm
-    template_name = 'users/profile_edit.html'
-    success_url = reverse_lazy('profile')
-    model = Profile
-
-    def get_object(self):
-        return self.request.user
-
 class EditProfilePageView(generic.UpdateView):
     model = Profile
     template_name = 'users/profile_edit.html'
-    success_url = reverse_lazy('profile')
+    # success_url = reverse_lazy('profile')
     fields = ['profile_picture']
+
+    def get_redirect_url(self, pk):
+        return reverse_lazy('profile',
+                            kwargs={'pk': pk},)
 
 class CreateProfileView(CreateView):
     model = Profile

@@ -45,14 +45,14 @@
     object-fit: cover;
 }
 
-#coverimg {
+/* #coverimg {
     height: 540px;
     width: auto;
     border-radius: 8px;
     margin-left: auto;
     margin-right: auto;
     object-fit: cover;
-}
+} */
 
 #postcard {
     color: white;
@@ -60,10 +60,10 @@
     width: 100%;
 }
 
-#postcardBody {
+/* #postcardBody {
     text-indent: 30px;
     font-family: AspergitRegular;
-}
+} */
 
 #Comments {
     background-color: #48484a;
@@ -72,10 +72,26 @@
 }
 
 #Comments > .card-body {
-    background-color: #48484a;
+    background-color: #5c5c5c;
     color: white;
     text-align: left;
     font-size: 23px;
+}
+
+#portalcardimg {
+    height: 50%;
+    width: auto;
+    border-radius: 8px;
+}
+
+.card-img-top {
+    height: 540px;
+    width: auto;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: cover;
+    padding: 10px;
 }
 
 .card-body {

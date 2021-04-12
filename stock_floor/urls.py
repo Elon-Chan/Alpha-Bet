@@ -15,7 +15,6 @@ from . import views
 urlpatterns = [
     path('', mainpage, name='stockfloor_blog'),
     path('stockfloor/', post_list, name='stockfloor_postlist'),
-    path('stockfloor/', post_list, name='stockfloor_postlist'),
     path('stockfloor/post/<str:slug>/', PostDetailView.as_view(), name='stockfloor_postdetail'),
     path('stockfloor/tgtags/<str:slug>', TgtagDetailList, name='stockfloor_tgtagsdetail'),
     path('stockfloor/post/<str:slug>/update/', PostUpdateView.as_view(), name='stockfloor_postupdate'),

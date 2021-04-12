@@ -1,16 +1,17 @@
 {% extends "stock_floor/base.html" %}
 
 {% block content %}
-  <h1 class="account-heading">{{ author }}</h1>
+  <h1 class="account-heading" style="font-size: 100px;">{{ author }}</h1>
   {% if author.profile.profile_picture %}
     <div class="img text-start">
-      <img id="profile_picture" class="rounded-circle account-img" src="{{ author.profile.profile_picture.url }}" height="150px">
+      <img id="profile_picture" class="rounded-circle" src="{{ author.profile.profile_picture.url }}" height="150px">
     </div>
+    <br>
   {% endif %}
   {% if author.email %}
-    <p class="text-secondary">User email is: {{ author.email }}</p>
+    <h4>User email is: {{ author.email }}</h4>
   {% else %}
-    <p class="test-secondary">User have not set email yet!</p>
+    <h4>User have not set email yet!</h4>
   {% endif %}
 <hr>
 <h2>Posts:</h2>
@@ -18,7 +19,7 @@
     <div id="postgrid" class="container"></div>
       <div id="postrow" class="row">
         {% for post in page.object_list %}
-          <div class="card text-center" style="width: 100%; background: none; border: none;">
+          <div id="cards" class="card text-center">
             {% if post.coverimg %}
               <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}" class="card-img-top"></a>
             {% else %}

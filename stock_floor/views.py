@@ -47,6 +47,7 @@ def mainpage(request):
 
     return render(request, 'stock_floor/index.html', {'title': 'Welcome to Alpha Bet', 'form': form})
 
+@login_required
 def portalView(request):
     return render(request, 'stock_floor/portal.html')
 

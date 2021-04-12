@@ -9,7 +9,7 @@
 <div id="postgrid" class="container"></div>
     <div id="postrow" class="row">
       {% for post in page.object_list %}
-        <div class="card text-center" style="width: 100%; background: none;">
+        <div id="cards" class="card text-center">
           {% if post.coverimg %}
             <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}" class="card-img-top"></a>
           {% else %}

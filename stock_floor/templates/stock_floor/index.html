@@ -3,69 +3,61 @@
 {%  load static %}
 
 {% load crispy_forms_tags %}
+
 {% block title %}Stock Floor{% endblock %}
 
 {% block content %}
-    <!-- Masthead -->
-  <header class="masthead text-white text-center">
+    <header class="masthead text-white text-center">
     <div class="overlay"></div>
     <div class="container">
-      <div class="row">
+        <div class="row">
             <div class="col-xl-9 mx-auto">
                 <h1 id="slogen" class="mb-5">Let's improve your investment portfolio!!!</h1>
             </div>
-      </div>
-   </div>
-  </header>
+        </div>
+    </div>
+    </header>
 
+    <div class="row" >
+        <div class="col-md-7 ">
+            <h1>&nbsp;</h1>
+            <h1>&nbsp;</h1>
+            <h1 id="slogen" class="mb-5"> fuck you </h1>
+        </div>
 
-
-   <div class="row" >
-
-
-       <div class="col-md-7 " >
-        <h1>&nbsp;</h1>
-        <h1>&nbsp;</h1>
-        <h1 id="slogen" class="mb-5"> fuck you </h1>
-                    
-                     
-
-       </div>
-
-
-
-       <div class="col-md-5 ">
-         <div class="card text-white bg-dark mb-5 offset-l2" id="slogen" style="width: 100%">
-        <div class="card-header"   style="font-size: 23px;">Sign Up</div>
-        <div class="card-body">
-            <div class="col d-flex justify-content-center">
-            <div class="content-section"style="width: 70%;font-size: 20px"  >
-                <form method="POST">
-                    {% csrf_token %}
-                    <fieldset class="form-group">
-                        <legend class="border-bottom mb-4" >Join Today</legend>
-                        {{ form|crispy }}
-                        <p style="color:rgb(236, 69, 69)">*Please register with your own email since email verification is required</p>
-                    </fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-outline-info" type="submit">Sign Up</button>
+        <div class="col-md-5 ">
+            <div class="card text-white bg-dark mb-5 offset-l2" id="slogen" style="width: 100%">
+            <div class="card-header" style="font-size: 23px;">Sign Up</div>
+            <div class="card-body">
+                <div class="col d-flex justify-content-center">
+                    <div class="content-section"style="width: 70%;font-size: 20px"  >
+                        <form method="POST">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                <legend class="border-bottom mb-4" >Join Today</legend>
+                                {{ form|crispy }}
+                                <p style="color:rgb(236, 69, 69)">*Please register with your own email since email verification is required</p>
+                            </fieldset>
+                            <div class="form-group">
+                                <button class="btn btn-info" type="submit">Sign Up</button>
+                            </div>
+                            <br>
+                        </form>
+                        <div class="border-top pt-3">
+                            <small class="text-muted">
+                                Already Have An Account? <a class="ml-2" href="#">Sign In</a>
+                            </small>
+                        </div>
                     </div>
-                </form>
-                <div class="border-top pt-3">
-                    <small class="text-muted">
-                        Already Have An Account? <a class="ml-2" href="#">Sign In</a>
-                    </small>
                 </div>
             </div>
-            </div>
         </div>
-      </div>
     </div>
 
 
 
 
-   </div>
+    </div>
 
 
 {% endblock content %}

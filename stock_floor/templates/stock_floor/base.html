@@ -20,7 +20,11 @@
     
     <nav id="navbar" class="navbar navbar-expand-md mb-4 py-3">
         <div class="container-fluid">
-            <a href="/"><img id="ABNavbarLogo" class="img" src="/static/img/Alphabet_Icon.png"></a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'portal' %}"><img id="ABNavbarLogo" class="img" src="/static/img/Alphabet_Icon.png"></a>
+            {% else %}
+                <a href="/"><img id="ABNavbarLogo" class="img" src="/static/img/Alphabet_Icon.png"></a>
+            {% endif %}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
             <span class="navbar-toggler-icon"></span>
             </button>

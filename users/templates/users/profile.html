@@ -1,7 +1,7 @@
 {% extends "stock_floor/base.html" %}
 
 {% block content %}
-  <h1 class="account-heading" style="font-size: 100px;">{{ author }}</h1>
+  <h1 class="account-heading" style="font-size: 70px;">{{ author }}</h1>
   {% if author.profile.profile_picture %}
     <div class="img text-start">
       <img id="profile_picture" class="rounded-circle" src="{{ author.profile.profile_picture.url }}" height="150px">
@@ -9,9 +9,9 @@
     <br>
   {% endif %}
   {% if author.email %}
-    <h4>User email is: {{ author.email }}</h4>
+    <h5>User email is: {{ author.email }}</h5>
   {% else %}
-    <h4>User have not set email yet!</h4>
+    <h5>User have not set email yet!</h5>
   {% endif %}
 <hr>
 <h2>Posts:</h2>
@@ -19,23 +19,39 @@
     <div id="postgrid" class="container"></div>
       <div id="postrow" class="row">
         {% for post in page.object_list %}
-          <div id="cards" class="card text-center">
+        <div id="postlistcard" class="container">
+          <div id="postlistcardr1" class="row">
             {% if post.coverimg %}
-              <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}" class="card-img-top"></a>
+              <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}"></a>
             {% else %}
-              <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="/static/img/Alphabet_Design_3.png" class="card-img-top"></a>
+              <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="/static/img/Alphabet_Design_3.png"></a>
             {% endif %}
-            <div class="card-body">
-              <h3 class="card-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
-              <p class="card-text lead" >{{ post.content | truncatewords:3 }}...</p>
-              <h5><a href="{% url 'profile' pk=post.author.id %}">{{ post.author }}</a> {{ post.date_posted|date:"F d, Y" }}</h5>
-              <h5>
-                {% for tgtags in post.tgtags.all %}
-                  <span><a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary" id="postlist_tags">#{{ tgtags }} </a></span>
-                {% endfor %}
-              </h5>  
-            </div>
           </div>
+          <div id="postlistcardr2" class="row-sm">
+            <h3 class="text-center"><a href="{{ post.get_absolute_url }}">{{ post.title|truncatechars:10 }}</a></h3>
+          </div>
+          <div id="postlistcardr3" class="row">
+            <p class="card-text lead" >{{ post.content|truncatewords:3 }}...</p>
+          </div>
+          <div id="postlistcardr4" class="row-sm">
+            <span id="postlistcardc1" class="col-1">
+              <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
+            </span>
+            <span id="postlistcardc2" class="col-8">
+              by <a href="{% url 'profile' pk=post.author.id %}">{{ post.author|truncatechars:10 }}</a>
+            </span>
+            <span id="postlistcardc3" class="col-1">
+              <a>{{ post.date_posted|date:"F d, Y" }}</a>
+            </span>
+          </div>
+          <div id="postlistcardr5" class="row-sm">
+            <span>
+              {% for tgtags in post.tgtags.all %}
+                <a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary" id="postlist_tags">#{{ tgtags }} </a>
+              {% endfor %}
+            </span>
+          </div>
+        </div>
         {% endfor %}
       </div>
       <br>

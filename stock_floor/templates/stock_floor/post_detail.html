@@ -5,7 +5,7 @@
 {% get_current_timezone as TIME_ZONE %}
 
 {% block content %}
-    <h1 class="mt-5" style="font-size: 100px;">{{ post.title }}</h1>
+    <h1 class="mt-5" style="font-size: 80px;">{{ post.title }}</h1>
     <p>
         <h4>
             {% for tag in post.tgtags.all %}
@@ -15,9 +15,9 @@
     </p>
     <div id="postcontent" class="container">
         <div class="row">
-            <span><a href="{% url 'profile' pk=post.author.id %}"><img id="postauthorimg" class="rounded-circle" src="../../../mediafiles/{{post.author.profile.profile_picture}}"></a>
+            <span><a href="{% url 'profile' pk=post.author.id %}"><img id="postauthorimg" class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
                 <span id="postauthor">
-                    <a href="{% url 'profile' pk=post.author.id %}">{{ post.author }}</a>
+                    <a href="{% url 'profile' pk=post.author.id %}" style="font-size: 40px;">{{ post.author }}</a>
                 </span>
             </span>
         </div>
@@ -34,10 +34,8 @@
         <hr>
     {% endif %}
     
-    <div id="postcard" class="card">
-        <div id="postcardBody" class="card-body  text-start ms-2" style="font-size: 20px;">
-            {{ post.content }}
-        </div>
+    <div id="postcardBody" class="card-body text-start" style="font-size: 20px; background-color: #48484a; border-radius: 25px;">
+        {{ post.content|safe }}
     </div>
     {% if post.author == user %}
         <br>
@@ -58,7 +56,7 @@
                 </div>
             </div>
             <div class="card-body text-start">
-                <div id="commentcontent" class="ms-4 mb-1">
+                <div id="commentcontent" class="ms-4">
                     {{ comment.comment }}
                 </div>
             </div>

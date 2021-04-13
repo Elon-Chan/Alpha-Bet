@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'hitcount',
     'taggit',
+    'ckeditor',
     'strategy.apps.StrategyConfig', # strategy app
     'django_plotly_dash.apps.DjangoPlotlyDashConfig', #django-plotly-dash
 ]

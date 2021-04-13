@@ -17,6 +17,14 @@ from django.urls import reverse_lazy
 from .models import Profile
 from stock_floor.models import Post
 from django.core.paginator import Paginator
+import re
+from django.utils.html import strip_tags
+
+def textify(html):
+    # Remove html tags and continuous whitespaces 
+    text_only = re.sub('[ \t]+', ' ', strip_tags(html))
+    # Strip single spaces in the beginning of each line
+    return text_only.replace('\n ', '\n').strip()
 
 UserModel = get_user_model()
 
@@ -49,6 +57,10 @@ def register(request):
 def profile(request, pk):
     posts = Post.objects.filter(author=pk)
     author = User.objects.get(id=pk)
+
+    for post in posts:
+        post.content = textify(post.content)
+        post.content = post.content.replace("&nbsp;", ' ')
 
     paginator = Paginator(posts, 6)
     page_number = request.GET.get('page', 1)

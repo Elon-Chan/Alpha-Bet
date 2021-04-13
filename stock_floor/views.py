@@ -20,6 +20,14 @@ from django.contrib import messages
 from taggit.models import TagBase, Tag
 from django.db.models import Q
 from django.core.paginator import Paginator
+import re
+from django.utils.html import strip_tags
+
+def textify(html):
+    # Remove html tags and continuous whitespaces 
+    text_only = re.sub('[ \t]+', ' ', strip_tags(html))
+    # Strip single spaces in the beginning of each line
+    return text_only.replace('\n ', '\n').strip()
 
 def mainpage(request):
     if request.method == 'POST':
@@ -59,8 +67,11 @@ def post_list(request):
     else:
         posts = Post.objects.all()
 
+    for post in posts:
+        post.content = textify(post.content)
+        post.content = post.content.replace("&nbsp;", ' ')
+    
     paginator = Paginator(posts, 6)
-
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
 
@@ -120,6 +131,9 @@ class PostDetailView(HitCountDetailView, ListView):
 def TgtagDetailList(request, slug):
         tgtag = Post.objects.filter(tgtags__name__in=[slug])
         tagname = slug
+
+        for post in tgtag:
+            post.content = textify(post.content)
 
         paginator = Paginator(tgtag, 6)
         page_number = request.GET.get('page', 1)

@@ -3,23 +3,24 @@
 {% block title %}Create New Post{% endblock %}
 
 {% block content %}
-<h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
+<h1 id="StockFloorTitle" style="font-size: 50px; font-family: AspergitRegular; margin-top: 100px;">Dear {{user}}, please choose your destination: </h1>
 <hr>
-<div id="portalgrid" class="container"></div>
-    <div id="postrow" class="row">
-        <div class="card text-center" style="width: 75%; background: none; border: none;">
+<Br></Br>
+<div id="portalgrid" class="container" ></div>
+    <div id="postrow" class="row ms-5" style="position: relative; left: 0.75cm;">
+        <div class="card text-center" style="width: 75%; background-color: #48484a; border: none;">
             <a href="{% url 'strategy-home' %}"><img id="portalcardimg" src="/static/img/Portal_StrategyAnalyzer.png" class="card-img-top" style="height: 100%;"></a>
             <div class="card-body">
               <h3 class="card-title"><a href="{% url 'strategy-home' %}">Strategy Analyzer</a></h3> 
             </div>
           </div>
-          <div class="card text-center" style="width: 75%; background: none; border: none;">
+          <div class="card text-center" style="width: 75%; background-color: #48484a;; border: none;">
             <a href="{% url 'strategy-hedge' %}"><img id="portalcardimg" src="/static/img/Portal_Hedge.png" class="card-img-top" style="height: 100%;"></a>
             <div class="card-body">
               <h3 class="card-title"><a href="{% url 'strategy-hedge' %}">Hedge</a></h3> 
             </div>
           </div>
-          <div class="card text-center" style="width: 75%; background: none; border: none;">
+          <div class="card text-center" style="width: 75%; background-color: #48484a;; border: none;">
             <a href="{% url 'stockfloor_postlist' %}"><img id="portalcardimg" src="/static/img/Portal_Blog.png" class="card-img-top" style="height: 100%;"></a>
             <div class="card-body">
               <h3 class="card-title"><a href="{% url 'stockfloor_postlist' %}">Stock Floor</a></h3> 

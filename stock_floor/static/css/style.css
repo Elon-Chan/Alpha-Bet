@@ -31,8 +31,121 @@
 #postrow {
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    grid-gap: 50px;
+    grid-gap: 30px;
     margin-right: 1.5cm;
+}
+
+#postlistcard {
+    display: grid;
+    background-color: #191919;
+    grid-template-rows: [r1] 2.2in [r2] 0.7in [r3] 1in [r4] 0.5in [r5] auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 18px;
+    border-radius: 6px;
+}
+
+#postlistcardr1 {
+    grid-row-start: r1;
+    grid-row-end: r2;
+    color: white;
+    font-family: AspergitRegular;
+    justify-self: center;
+    align-self: center;
+}
+
+#postlistcardr1 a {
+    border-radius: 6px;
+}
+
+#postlistcardr2 {
+    grid-row-start: r2;
+    grid-row-end: r3;
+    font-family: AspergitRegular;
+    justify-self: center;
+    align-self: center;
+}
+
+#postlistcardr2 a {
+    color: white;
+    font-size: 47px;
+}
+
+#postlistcardr3 {
+    grid-row-start: r3;
+    grid-row-end: r4;
+    font-family: AspergitRegular;
+    justify-self: center;
+    align-self: center;
+}
+
+#postlistcardr3 p {
+    grid-row-start: r3;
+    grid-row-end: r4;
+    color: white;
+    font-family: AspergitRegular;
+    justify-self: center;
+    align-self: center;
+    font-size: 26px;
+}
+
+#postlistcardr4 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+    grid-template-columns: [c1] 20% [c2] 70% [c3] 5%;
+}
+
+#postlistcardc1 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+    grid-column-start: c1;
+    grid-column-end: c2;
+    color: white;
+    font-family: AspergitRegular;
+    justify-self: center;
+    align-self: center;
+    margin-left: 0.2cm;
+}
+
+.row-sm .rounded-circle{
+    height: 50px;
+    width: 50px;
+}
+
+#postlistcardc2 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+    grid-column-start: c2;
+    grid-column-end: c3;
+    color: white;
+    font-family: AspergitRegular;
+    justify-self: center;
+    align-self: center;
+    /* margin-left: 10px; */
+    font-size: 24px;
+}
+
+#postlistcardc3 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+    grid-column-start: c3;
+    color: white;
+    font-family: AspergitRegular;
+    position: absolute;
+    vertical-align: bottom;
+    text-align: end;
+    margin-top: 13px;
+    margin-right: 0.2cm;
+    font-size: 18px;
+}
+
+#postlistcardr5 {
+    grid-row-start: r5;
+    color: white;
+    font-family: AspergitRegular;
+    justify-self: center;
+    align-self: center;
+    font-size: 23px;
 }
 
 #cards {
@@ -45,7 +158,7 @@
     width: 200px;
     height: 200px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 6px;
     margin-left: -0.1cm;
     margin-right: auto;
 }
@@ -54,7 +167,7 @@
     width: 90px;
     height: 90px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 6px;
     margin-left: -0.1cm;
     margin-right: auto;
 }
@@ -82,13 +195,14 @@
     background-color: #48484a;
     color: white;
     font-family: AspergitRegular;
-    border-radius: 25px;
+    border-radius: 6px;
 }
 
 #postcommentimg {
     height: 80px;
     width: 80px;
     padding: 7px;
+    margin-top: 5px;
 }
 
 #postcommentauthor {
@@ -114,7 +228,7 @@
 .card-img-top {
     height: 100px;
     width: auto;
-    border-radius: 18px;
+    border-radius: 6px;
     margin-left: auto;
     margin-right: auto;
     object-fit: cover;
@@ -123,7 +237,8 @@
 
 .card-body {
     text-align: center;
-    padding: 10px 0;
+    vertical-align: middle;
+    padding: 10px;
     font-size: 10px;
 }
 
@@ -136,8 +251,14 @@
 }
 
 .card-footer {
+    font-family: AspergitRegular;
+    position:absolute;
+    bottom: 0;
     font-size: 25px;
     background-color: #191919;
+    color: white;
+    display: flex;
+    align-items: center;
 }
 
 #navbar{
@@ -160,6 +281,16 @@
     height: 60px;
     width: 60px;
     background: #48484a;
+}
+
+#ABLogo {
+    height: 360px;
+    width: 400px;
+}
+
+#slogen_af {
+    font-family: AspergitRegular;
+    color: white;
 }
 
 h1, h2, h3, h4, h5, h6, p, hr {

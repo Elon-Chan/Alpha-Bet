@@ -5,11 +5,13 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse, redirect
 from autoslug import AutoSlugField
 from taggit.managers import TaggableManager
+from ckeditor.fields import RichTextField
 
 User = get_user_model()
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    content = models.TextField()
+    content = RichTextField(blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = AutoSlugField(populate_from='title')
@@ -30,7 +32,6 @@ class Post(models.Model):
 
     def get_tag_name(self):
         return self.tgtags.name
-
     class Meta:
         ordering = ['-date_posted']
 

@@ -48,14 +48,14 @@ def download_yfinance_data(ticker, start_date, end_date):
     return history
 
 def compute_bnh_performance(df):
-    pct_return = round((df['Close'].iloc[-1] / df['Close'].iloc[0] - 1) * 100, 4)
-    volatility = round(df['Close'].std(), 4)
+    pct_return = round((df['Close'].iloc[-1] / df['Close'].iloc[0] - 1) * 100, 2)
+    volatility = round(df['Close'].std(), 2)
 
     roll_max = df['Close'].cummax()
     daily_drawdown = (df['Close']/roll_max - 1) * 100
-    mdd = round(daily_drawdown.cummin()[-1], 4)
+    mdd = round(daily_drawdown.cummin()[-1], 2)
 
-    sharpe = round(pct_return/volatility, 4)
+    sharpe = round(pct_return/volatility, 2)
     return [pct_return, volatility, mdd, sharpe]
 
 def compute_strategy_performance(df, buy_technical_indicators, sell_technical_indicators):
@@ -71,29 +71,31 @@ def compute_strategy_performance(df, buy_technical_indicators, sell_technical_in
     overall_return = 1 + buy_return + sell_return
     overall_return.dropna(inplace=True)
 
-    strategy_return = round((overall_return.cumprod()[-1] - 1)*100, 4)
+    strategy_return = round((overall_return.cumprod()[-1] - 1)*100, 2)
     
     traded_day_price = (buy + (-1 * sell)) * df['Close']
     traded_day_price = traded_day_price[traded_day_price != 0]
-    volatility = round(traded_day_price.std(), 4)
+    volatility = round(traded_day_price.std(), 2)
 
     roll_max = traded_day_price.cummax()
     daily_drawdown = (traded_day_price/roll_max - 1) * 100
-    mdd = round(daily_drawdown.cummin()[-1], 4)
+    mdd = round(daily_drawdown.cummin()[-1], 2)
 
-    sharpe = round(strategy_return/volatility, 4)
+    sharpe = round(strategy_return/volatility, 2)
 
     return [strategy_return, volatility, mdd, sharpe]
 
 
 app = DjangoDash('strategy_analyzer', add_bootstrap_links=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
-app.css.append_css({'external_url': '/assets/style.css'})
+
+disclaim = 'The content of this webpage is not an investment advice and does not constitute any offer or solicitation to offer or recommendation of any investment product. It is for general purposes only and does not take into account your individual needs, investment objectives and specific financial circumstances. Investment involves risk. The investor type classification has no relationship with and is not any substitute for the Financial Needs Analysis (the “FNA”) or your risk profiling under the FNA. You instruct us that if there is any conflict or inconsistency between the investor type classification and your investment risk profiling under the FNA, the latter shall prevail and be used for assessing your risk profile for your conducting investment product transaction with our Bank. Please also note that asset allocation does not generate positive return or protection against market loss.'
 
 
 app.layout = html.Div(children=[
     # title
     html.H1(children="Stock Strategy Analyzer", style={'text-align': 'center', 'font-family': 'HaextPlain'}),
-    html.H3(children="description", style={'text-align': 'center'}),
+    html.Br(),
+    html.H3(children="Inform, Improve, Inexorable", style={'text-align': 'center'}),
     # linebreak
     html.Br(),
     dbc.Row(
@@ -129,69 +131,80 @@ app.layout = html.Div(children=[
     html.Br(),
 
     # card deck
-    dbc.CardDeck([
-        dbc.Card([
-            dbc.CardHeader([html.H2(children="Buy")]),
-            dbc.CardBody([
-                html.H3(children="If"),
-                dcc.Dropdown(id='buy-strategy-1',
-                                options=dropdown_options,
-                                value='MA',
-                                style={"color": "#000"}),
-                html.Div(id='buy-strategy-1-parameter-container'),
-                html.H3(children="Cross Up"),
-                dcc.Dropdown(id='buy-strategy-2',
-                                options=dropdown_options,
-                                value='MA',
-                                style={"color": "#000"}),
-                html.Div(id='buy-strategy-2-parameter-container'),
-            ]),
+    dbc.Row(
+        [
+            dbc.Col([
+                html.Div(children=[
+                    dbc.Card([
+                        dbc.CardHeader([html.H2(children="Buy")]),
+                        dbc.CardBody([
+                            html.H3(children="If"),
+                            dcc.Dropdown(id='buy-strategy-1',
+                                            options=dropdown_options,
+                                            value='MA',
+                                            style={"color": "#000", 'font-size': '15px',}),
+                            html.Div(id='buy-strategy-1-parameter-container', style={'padding-top': '10px'}),
+                            html.H3(children="Cross Up", style={'padding-top': '5px'}),
+                            dcc.Dropdown(id='buy-strategy-2',
+                                            options=dropdown_options,
+                                            value='MA',
+                                            style={"color": "#000", 'font-size': '15px',}),
+                            html.Div(id='buy-strategy-2-parameter-container', style={'padding-top': '10px'}),
+                        ]),
+                    ],
+                        color="#5c5c5c",
+                        inverse=True,
+                        style={"width": "35rem"},
+                    ),
+                ]),
+            ], width="auto"),
+            dbc.Col([
+                html.Div(children=[
+                    dbc.Card([
+                        dbc.CardHeader([html.H2(children="Sell")]),
+                        dbc.CardBody([
+                            html.H3(children="If"),
+                            dcc.Dropdown(id='sell-strategy-1',
+                                            options=dropdown_options,
+                                            value='MA',
+                                            style={"color": "#000", 'font-size': '15px',}),
+                            html.Div(id='sell-strategy-1-parameter-container', style={'padding-top': '10px'}),
+                            html.H3(children="Cross Up", style={'padding-top': '5px'}),
+                            dcc.Dropdown(id='sell-strategy-2',
+                                            options=dropdown_options,
+                                            value='MA',
+                                            style={"color": "#000", 'font-size': '15px',}),
+                            html.Div(id='sell-strategy-2-parameter-container', style={'padding-top': '10px'}),
+                        ]),
+                    ],
+                        color="#5c5c5c",
+                        inverse=True,
+                        style={"width": "35rem"},
+                    ),
+                ]),
+            ], width="auto"),
         ],
-            style={"width": "30rem"},
-            color="#5c5c5c",
-            inverse=True,
-            className="w-50",
-        ),
-        dbc.Card([
-            dbc.CardHeader([html.H2(children="Sell")]),
-            dbc.CardBody([
-                html.H3(children="If"),
-                dcc.Dropdown(id='sell-strategy-1',
-                                options=dropdown_options,
-                                value='MA',
-                                style={"color": "#000"}),
-                html.Div(id='sell-strategy-1-parameter-container'),
-                html.H3(children="Cross Up"),
-                dcc.Dropdown(id='sell-strategy-2',
-                                options=dropdown_options,
-                                value='MA',
-                                style={"color": "#000"}),
-                html.Div(id='sell-strategy-2-parameter-container'),
-            ]),
-        ],
-            style={"width": "30rem"},
-            color="#5c5c5c",
-            inverse=True,
-            className="w-50",
-        ),
-    ]),
+        justify="between"
+    ),
 
     # linebreak
     html.Br(),
 
     # submit button
     html.Div(
-        children=[html.Button(
+        children=[dbc.Button(
             'Analyze', id='submit-val',
             n_clicks=0,
+            outline=True,
+            color="primary",
+            className="mr-1",
             style={
                 "font-size": "25px",
-                "padding": "5px 80px",
-                "border-radius": "6px",
-                'font-family': 'HaextPlain',
-                'background-color': '#757575',
                 'color': 'white',
-                'font-weight': 'bold'
+                'font-family': 'HaextPlain',
+                'font-weight': 'bold',
+                "padding": "5px 80px 10px",
+                "border-radius": "6px",
             }
         )],
         style={'text-align': 'center'}
@@ -207,7 +220,7 @@ app.layout = html.Div(children=[
     html.Div([
         dbc.Card(
             dbc.CardHeader(
-                html.H3("Trend")
+                html.H3("Stock Trend and Strategy Movements")
             ),
             color="#5c5c5c",
             inverse=True,
@@ -216,7 +229,7 @@ app.layout = html.Div(children=[
             dbc.CardBody(
                 dcc.Graph(id="graph", figure=blank_figure()),
             ),
-            color="#5c5c5c",
+            color="#48484a",
             inverse=True,
         ),
         dbc.Card(
@@ -224,7 +237,8 @@ app.layout = html.Div(children=[
                 dcc.Checklist(
                     id='toggle-rangeslider',
                     options=[{'label': 'Include Rangeslider', 'value': 'slider'}],
-                    value=['slider']
+                    value=['slider'],
+                    style={'font-family': 'AspergitRegular'}
                 ),
             ),
             color="#5c5c5c",
@@ -234,48 +248,77 @@ app.layout = html.Div(children=[
 
     # linebreak
     html.Br(),
+    html.Br(),
 
     # performance report
     dbc.Card(
-            dbc.CardHeader(
-                html.H3("Performance Report")
-            ),
-            color="#5c5c5c",
-            inverse=True,
+        dbc.CardHeader(
+            html.H3("Performance Report")
+        ),
+        color="#5c5c5c",
+        inverse=True,
     ),
-    dbc.Card(
-            dbc.CardBody(
+    dbc.Row([
+        dbc.Col(dbc.Card(
+            dbc.CardBody([
                 html.Table(
-            children=[
-                html.Tr(children=[
-                    html.Th(),
-                    html.Th(children='Return'),
-                    html.Th(children='Volatility'),
-                    html.Th(children='Maximum Drawdown'),
-                    html.Th(children='Sharpe Ratio'),
-                ]),
-                html.Tr(children=[
-                    html.Th(children='Buy and Hold'),
-                    html.Td(id='bnh-Return', children=[]),
-                    html.Td(id='bnh-Volatility', children=[]),
-                    html.Td(id='bnh-Maximum Drawdown', children=[]),
-                    html.Td(id='bnh-Sharpe Ratio', children=[]),
-                ]),
-                html.Tr(children=[
-                    html.Th(children='Strategy'),
-                    html.Td(id='Return', children=[]),
-                    html.Td(id='Volatility', children=[]),
-                    html.Td(id='Maximum Drawdown', children=[]),
-                    html.Td(id='Sharpe Ratio', children=[]),
-                ]),
+                    children=[
+                        html.Tr(children=[
+                            html.Th(children='  Buy And Hold', colSpan='4', style={'font-family': 'AspergitRegular', 'font-size': '30px', 'text-align': 'left', 'padding-left':'10px'}),
+                        ]),
+                        html.Tr(children=[
+                            html.Td(children='Return(%)', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                            html.Td(children='Volatility', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                            html.Td(children='Maximum Drawdown(%)', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                            html.Td(children='Sharpe Ratio', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                        ], style={'padding-left':'10px'}),
+                        html.Tr(children=[
+                            html.Td(id='bnh-Return', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'colspan': '3', 'font-size': '15px'}),
+                            html.Td(id='bnh-Volatility', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'font-size': '15px'}),
+                            html.Td(id='bnh-Maximum Drawdown', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'font-size': '15px'}),
+                            html.Td(id='bnh-Sharpe Ratio', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'font-size': '15px'}),
+                        ], style={'padding-left':'10px'}),
+                        html.Br(),
+                        html.Br(),
+                        html.Br(),
+                        html.Br(),
+                        html.Tr(children=[
+                            html.Th(children='  Strategy', colSpan='4', style={'font-family': 'AspergitRegular', 'font-size': '30px', 'text-align': 'left','padding-left':'10px'}),
+                        ]),
+                        html.Tr(children=[
+                            html.Td(children='Return(%)', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                            html.Td(children='Volatility', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                            html.Td(children='Maximum Drawdown(%)', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                            html.Td(children='Sharpe Ratio', style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'padding': '7px', 'font-family': 'AspergitRegular', 'font-size': '15px'}),
+                        ], style={'padding-left':'100px'}),
+                        html.Tr(children=[
+                            html.Td(id='Return', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'font-size': '15px'}),
+                            html.Td(id='Volatility', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'font-size': '15px'}),
+                            html.Td(id='Maximum Drawdown', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'font-size': '15px'}),
+                            html.Td(id='Sharpe Ratio', children=[], style={'border': '1px solid #ddd', 'border-collapse': 'collapse', 'font-size': '15px'}),
+                        ], style={'margin-left':'100px'}),
+                    ]
+                ),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Div(id='disclaimer', children=f'Disclaimer: {disclaim}', style={'font-size': '10px'}),
             ]
-            )
             ),
-            color="#5c5c5c",
+            color="#48484a",
             inverse=True,
-    ),
-
-    dcc.Graph(id="radar", figure=blank_figure()),
+        ), width=5
+        ),
+        dbc.Col(dbc.Card(
+            dbc.CardBody(
+                dcc.Graph(id="radar", figure=blank_figure()),
+            ),
+            color="#48484a",
+            inverse=True
+        ), width=7
+        ),
+    ]),
 ])
 
 @app.callback(
@@ -340,28 +383,68 @@ def display_graph(n_clicks, slider, ticker, start_date, end_date, buy_strategy_1
                     plot_bgcolor = 'rgba(0,0,0,0)')
 
     categories = ['Return', 'Volatility', 'Maximum Drawdown', 'Sharpe Ratio']
-    radar = go.Figure()
+    radar = make_subplots(specs=[[{"secondary_y": True}]])
 
     radar.update_layout(
-    polar=dict(
-        radialaxis=dict(
-        visible=True,
-        range=[0, 5]
-        )),
-    showlegend=False
+        polar=dict(
+            radialaxis=dict(
+                visible=False,
+                range=[1, 5]
+            )
+        ),
+        showlegend=False,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        autosize=True,
+        font=dict(
+            size=20,
+            color='white',
+            family='AspergitRegular'
+            )
     )
 
+    benchmark = [1, 20, 5, 0.5]
+    bnh_performance_rate = []
+    strategy_performance_rate = []
+
+    for i, (bnh_quality, strategy_quality) in enumerate(zip(bnh_performance, strategy_performance)):
+        print(bnh_quality, strategy_quality)
+        bnh_ratio = np.abs(bnh_quality)/benchmark[i] - 1
+        print(bnh_ratio)
+        strategy_ratio = np.abs(strategy_quality)/benchmark[i] - 1
+        if bnh_ratio < 0:
+            bnh_performance_rate.append(1)
+        elif bnh_ratio >= 0 and bnh_ratio < 5:
+            bnh_performance_rate.append(2)
+        elif bnh_ratio >= 5 and bnh_ratio < 10:
+            bnh_performance_rate.append(3)
+        elif bnh_ratio >= 10 and bnh_ratio < 15:
+            bnh_performance_rate.append(4)
+        elif bnh_ratio >= 15:
+            bnh_performance_rate.append(5)
+
+        if strategy_ratio < 0:
+            strategy_performance_rate.append(1)
+        elif strategy_ratio >= 0 and bnh_ratio < 5:
+            strategy_performance_rate.append(2)
+        elif strategy_ratio >= 5 and bnh_ratio < 10:
+            strategy_performance_rate.append(3)
+        elif strategy_ratio >= 10 and bnh_ratio < 15:
+            strategy_performance_rate.append(4)
+        elif strategy_ratio >= 15:
+            strategy_performance_rate.append(5)
+
     radar.add_trace(go.Scatterpolar(
-        r=[1, 5, 2, 2],
-        theta=categories,
-        fill='toself',
-        name='Buy and Hold'
-    ))
-    radar.add_trace(go.Scatterpolar(
-        r=[2, 1, 3, 1],
+        r=[strategy_performance_rate[0], strategy_performance_rate[1], strategy_performance_rate[2], strategy_performance_rate[3]],
         theta=categories,
         fill='toself',
         name='Strategy'
+    ))  
+    radar.add_trace(go.Scatterpolar(
+        r=[bnh_performance_rate[0], bnh_performance_rate[1], bnh_performance_rate[2], bnh_performance_rate[3]],
+        theta=categories,
+        fill='toself',
+        name='Buy and Hold'
     ))
 
 
@@ -388,6 +471,6 @@ def display_inputs(buy_strategy_1, buy_strategy_2, sell_strategy_1, sell_strateg
     buy_strategy_1_parameter = create_input(buy_strategy_1, 'buy', '1')
     buy_strategy_2_parameter = create_input(buy_strategy_2, 'buy', '2')
     sell_strategy_1_parameter = create_input(sell_strategy_1, 'sell', '1')
-    sell_strategy_2_parameter = create_input(sell_strategy_1, 'sell', '2')
+    sell_strategy_2_parameter = create_input(sell_strategy_2, 'sell', '2')
 
     return [buy_strategy_1_parameter, buy_strategy_2_parameter, sell_strategy_1_parameter, sell_strategy_2_parameter]

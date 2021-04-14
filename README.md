@@ -6,6 +6,8 @@ Our team decided to use Django as the development framework and native Django in
 
 Currently our work can be divided into three main parts, namely: **Frontend**, **Strategy Analyzer** and **Stock Floor**
 
+For final code and commented code, we have merge them all into 1 single branch *elon*.
+
 ---
 
 To view the initial code of Strategy Analyzer, please visit branch *elon*
@@ -16,24 +18,12 @@ Under ./strategy/templates/strategy contain a few html files but there is not mu
 
 Under ./strategy/dash_apps contain the core application of strategy analyzer created by Django_Dash
 
+Under ./stock_floor forms.py, models.py, urls.py, views.py contain our own code on partial routing of this version of the website as well as the design for user forms and database model.
+
+Under ./stock_floor/templates/stock_floor, all the .html files contain our own code for frontend.
+
 To run the code, you may create a virtual environment using conda and install all the library from the environment.yml, then simply type
 
     python managy.py runserver
 
 ---
-
-
-
----
-
-To view the initial code of Frontend and Stock Floor, please visit branch *dicky*
-
-Under ./stock_floor forms.py, models.py, urls.py, views.py contain our own code on partial routing of this version of the website as well as the design for user forms and database model.
-
-Under ./stock_floor/templates/stock_floor, all the .html files contain our own code for frontend.
-
-To run the code, you may create a virtual environment using conda and install all the library from the requirements.txt, then type the same command as above
-
----
-
-

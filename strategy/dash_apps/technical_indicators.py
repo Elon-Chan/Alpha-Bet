@@ -22,10 +22,10 @@ dropdown_options = [
     {'label': 'Overlap Studies: Triple Exponential Moving Average', 'value': 'TEMA', 'type': 'overlap'},
     {'label': 'Overlap Studies: Triangular Moving Average', 'value': 'TRIMA', 'type': 'overlap'},
     {'label': 'Overlap Studies: Weighted Moving Average', 'value': 'WMA', 'type': 'overlap'},
-    {'label': 'Momentum: Average Directional Movement Index', 'value': 'ADX', 'type': 'momentum'},
-    {'label': 'Momentum: Absolute Price Oscillator', 'value': 'APO', 'type': 'momentum'},
-    {'label': 'Momentum: Aroon Oscillator', 'value': 'AROONOSC', 'type': 'momentum'},
-    {'label': 'Momentum: Balance Of Power', 'value': 'BOP', 'type': 'momentum'},
+    # {'label': 'Momentum: Average Directional Movement Index', 'value': 'ADX', 'type': 'momentum'},
+    # {'label': 'Momentum: Absolute Price Oscillator', 'value': 'APO', 'type': 'momentum'},
+    # {'label': 'Momentum: Aroon Oscillator', 'value': 'AROONOSC', 'type': 'momentum'},
+    # {'label': 'Momentum: Balance Of Power', 'value': 'BOP', 'type': 'momentum'},
 ]
 
 number_of_parameters = {

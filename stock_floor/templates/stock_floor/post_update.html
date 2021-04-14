@@ -4,7 +4,8 @@
 
 {% load crispy_forms_tags %}
 {% block content %}
-<h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
+<h1 id="StockFloorTitle" class="text-center" style="font-family: HaextPlain;">Stock Floor</h1>
+<h3 class="text-center mt-4" style="font-family: AspergitRegular;">Where bright minds come together</h3>
 <div id="Post_Update_Form" class="content-section">
     <h1>Edit your Post</h1>
     <form action="{{ post.get_update_url }}" method="POST" enctype="multipart/form-data">
@@ -20,5 +21,5 @@
         </div>
     </form>
 </div>
-    
+<Br></Br>
 {% endblock %}

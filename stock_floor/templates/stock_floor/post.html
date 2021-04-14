@@ -5,11 +5,10 @@
 {% block content %}
 <h1 id="StockFloorTitle" class="text-center" style="font-family: HaextPlain;">Stock Floor</h1>
 <h3 class="text-center mt-4" style="font-family: AspergitRegular;">Where bright minds come together</h3>
-  <Hr></Hr>
   <a href="{% url 'create' %}" class="btn btn-primary ms-auto">Create New Post</a>
-  <Br></Br>
+  <hr/>
   <div id="postgrid" class="container"></div>
-    <div id="postrow" class="row">
+    <div id="postrow" class="row ms-1">
       {% for post in page.object_list %}
         <div id="postlistcard" class="container">
           <div id="postlistcardr1" class="row">
@@ -23,12 +22,18 @@
             <h3 class="text-center"><a href="{{ post.get_absolute_url }}">{{ post.title|truncatechars:10 }}</a></h3>
           </div>
           <div id="postlistcardr3" class="row">
-            <p class="card-text lead" >{{ post.content|truncatewords:3 }}...</p>
+            <p class="card-text lead" >{{ post.content|truncatewords:20 }}. . . .</p>
           </div>
           <div id="postlistcardr4" class="row-sm">
-            <span id="postlistcardc1" class="col-1">
-              <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
-            </span>
+            {% if post.author.profile %}
+              <span id="postlistcardc1" class="col-1">
+                <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
+              </span>
+            {% else %}
+              <span id="postlistcardc1" class="col-1">
+                <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png"></a>asd
+              </span>
+            {% endif %}
             <span id="postlistcardc2" class="col-8">
               by <a href="{% url 'profile' pk=post.author.id %}">{{ post.author|truncatechars:10 }}</a>
             </span>
@@ -44,22 +49,6 @@
             </span>
           </div>
         </div>
-
-        <!-- <div id="cards" class="card text-center">
-          {% if post.coverimg %}
-            <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="{{ post.coverimg.url }}" class="card-img-top"></a>
-          {% else %}
-            <a href="{{ post.get_absolute_url }}"><img id="cardimg" src="/static/img/Alphabet_Design_3.png" class="card-img-top"></a>
-          {% endif %}
-          <div class="card-body">
-            <h3 class="card-title"><a href="{{ post.get_absolute_url }}">{{ post.title|truncatewords:3 }}</a></h3>
-            <p class="card-text lead" >{{ post.content|truncatewords:3 }}...</p>
-            <div class="card-footer">by: <a href="{% url 'profile' pk=post.author.id %}">{{ post.author }}</a> <div style="font-size: 16px; text-align: right;">-{{ post.date_posted|date:"F d, Y" }}</div></div>
-            {% for tgtags in post.tgtags.all %}
-              <a href="{% url 'stockfloor_tgtagsdetail' slug=tgtags %}" class="badge bg-primary" id="postlist_tags">#{{ tgtags }} </a>
-            {% endfor %}
-          </div>
-        </div> -->
       {% endfor %}
     </div>
     <br>

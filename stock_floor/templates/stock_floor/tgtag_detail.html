@@ -3,10 +3,9 @@
 {% block title %}Post with ""{% endblock %}
 
 {% block content %}
-<h1 id="StockFloorTitle" class="text-center" style="font-family: HaextPlain;">Stock Floor</h1>
-<h3 class="text-center mt-4" style="font-family: AspergitRegular;">Where bright minds come together</h3>
+<h1 id="StockFloorTitle" class="text-center" style="font-size: 90px; font-family: HaextPlain;">Stock Floor</h1>
 <h1 class="ms-5" style="color:white;">Post with <span class="badge bg-primary" style="font-size: 25px;">#{{ tagname }}</span>:</h1>
-<hr></hr>
+
 <div id="postgrid" class="container"></div>
     <div id="postrow" class="row">
       {% for post in page.object_list %}
@@ -25,9 +24,15 @@
           <p class="card-text lead" >{{ post.content|truncatewords:3 }}...</p>
         </div>
         <div id="postlistcardr4" class="row-sm">
-          <span id="postlistcardc1" class="col-1">
-            <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
-          </span>
+          {% if post.author.profile %}
+            <span id="postlistcardc1" class="col-1">
+              <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
+            </span>
+          {% else %}
+            <span id="postlistcardc1" class="col-1">
+              <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png"></a>asd
+            </span>
+          {% endif %}
           <span id="postlistcardc2" class="col-8">
             by <a href="{% url 'profile' pk=post.author.id %}">{{ post.author|truncatechars:10 }}</a>
           </span>

@@ -15,11 +15,19 @@
     </p>
     <div id="postcontent" class="container">
         <div class="row">
-            <span><a href="{% url 'profile' pk=post.author.id %}"><img id="postauthorimg" class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
-                <span id="postauthor">
-                    <a href="{% url 'profile' pk=post.author.id %}" style="font-size: 40px;">{{ post.author }}</a>
+            {% if post.author.profile %}
+                <span><a href="{% url 'profile' pk=post.author.id %}"><img id="postauthorimg" class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
+                    <span id="postauthor">
+                        <a href="{% url 'profile' pk=post.author.id %}" style="font-size: 40px;">{{ post.author }}</a>
+                    </span>
                 </span>
-            </span>
+            {% else %}
+                <span><a href="{% url 'profile' pk=post.author.id %}"><img id="postauthorimg" class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png"></a>
+                    <span id="postauthor">
+                        <a href="{% url 'profile' pk=post.author.id %}" style="font-size: 40px;">{{ post.author }}</a>
+                    </span>
+                </span>
+            {% endif %}
         </div>
         
         <div id="postdate" class="row"> -{% localtime on %} {{ post.date_posted|date:"M j,y h:i a" }} {% endlocaltime %}</div>
@@ -34,7 +42,7 @@
         <hr>
     {% endif %}
     
-    <div id="postcardBody" class="card-body text-start" style="font-size: 20px; background-color: #48484a; border-radius: 6px; padding-top: 28px;">
+    <div id="postcardBody" class="card-body text-start" style="font-size: 20px; background-color: #48484a; border-radius: 25px;">
         {{ post.content|safe }}
     </div>
     {% if post.author == user %}
@@ -49,12 +57,22 @@
     {% else %}
         {% for comment in comment %}
         <div id="Comments" class="container">
-            <div class="row">
-                <div class="col-auto">
-                    <a href="{% url 'profile' pk=comment.comment_author.id %}"><img id="postcommentimg" class="rounded-circle" src="../../../mediafiles/{{comment.comment_author.profile.profile_picture}}"></a>
-                    <span id="postcommentauthor"><a href="{% url 'profile' pk=comment.comment_author.id %}">{{ comment.comment_author }}</a><span id="postcommentdate"> -{% localtime on %} {{ comment.comment_date_added|date:"M j,y h:i a" }} {% endlocaltime %}</span></span>
+            {% if comment.comment_author.profile %}
+                <div class="row">
+                    <div class="col-auto">
+                        <a href="{% url 'profile' pk=comment.comment_author.id %}"><img id="postcommentimg" class="rounded-circle" src="../../../mediafiles/{{comment.comment_author.profile.profile_picture}}"></a>
+                        <span id="postcommentauthor"><a href="{% url 'profile' pk=comment.comment_author.id %}">{{ comment.comment_author }}</a><span id="postcommentdate"> -{% localtime on %} {{ comment.comment_date_added|date:"M j,y h:i a" }} {% endlocaltime %}</span></span>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-auto">
+                        <a href="{% url 'profile' pk=comment.comment_author.id %}"><img id="postcommentimg" class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png"></a>
+                        <span id="postcommentauthor"><a href="{% url 'profile' pk=comment.comment_author.id %}">{{ comment.comment_author }}</a><span id="postcommentdate"> -{% localtime on %} {{ comment.comment_date_added|date:"M j,y h:i a" }} {% endlocaltime %}</span></span>
+                    </div>
+                </div>
+            {% endif %}
+            
             <div class="card-body text-start">
                 <div id="commentcontent" class="ms-4">
                     {{ comment.comment }}

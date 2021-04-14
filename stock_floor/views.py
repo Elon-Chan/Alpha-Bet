@@ -71,7 +71,7 @@ def post_list(request):
         post.content = textify(post.content)
         post.content = post.content.replace("&nbsp;", ' ')
     
-    paginator = Paginator(posts, 6)
+    paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
 
@@ -135,7 +135,7 @@ def TgtagDetailList(request, slug):
         for post in tgtag:
             post.content = textify(post.content)
 
-        paginator = Paginator(tgtag, 6)
+        paginator = Paginator(tgtag, 3)
         page_number = request.GET.get('page', 1)
         page = paginator.get_page(page_number)
 

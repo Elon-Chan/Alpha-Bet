@@ -1,3 +1,6 @@
+import sys
+sys.path.append("..")
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse, redirect
@@ -5,7 +8,7 @@ from django.shortcuts import reverse, redirect
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(blank=True, null=True, upload_to = 'img/profile/')
+    profile_picture = models.ImageField(default='img/profile/Alphabet_Icon.png', null=True, upload_to = 'img/profile/')
 
     def __str__(self):
         return str(self.user)

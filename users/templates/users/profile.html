@@ -1,10 +1,15 @@
 {% extends "stock_floor/base.html" %}
 
 {% block content %}
-  <h1 class="account-heading" style="font-size: 70px;">{{ author }}</h1>
+  <h1 class="account-heading" style="font-size: 50px;">{{ author }}</h1>
   {% if author.profile.profile_picture %}
     <div class="img text-start">
-      <img id="profile_picture" class="rounded-circle" src="{{ author.profile.profile_picture.url }}" height="150px">
+      <img id="profile_picture" class="rounded-circle" src="{{ author.profile.profile_picture.url }}">
+    </div>
+    <br>
+  {% else %}
+    <div class="img text-start">
+      <img id="profile_picture" class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png">
     </div>
     <br>
   {% endif %}
@@ -34,9 +39,15 @@
             <p class="card-text lead" >{{ post.content|truncatewords:3 }}...</p>
           </div>
           <div id="postlistcardr4" class="row-sm">
-            <span id="postlistcardc1" class="col-1">
-              <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
-            </span>
+            {% if post.author.profile %}
+              <span id="postlistcardc1" class="col-1">
+                <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/{{ post.author.profile.profile_picture }}"></a>
+              </span>
+            {% else %}
+              <span id="postlistcardc1" class="col-1">
+                <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png"></a>asd
+              </span>
+            {% endif %}
             <span id="postlistcardc2" class="col-8">
               by <a href="{% url 'profile' pk=post.author.id %}">{{ post.author|truncatechars:10 }}</a>
             </span>

@@ -62,7 +62,7 @@ def profile(request, pk):
         post.content = textify(post.content)
         post.content = post.content.replace("&nbsp;", ' ')
 
-    paginator = Paginator(posts, 6)
+    paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
 

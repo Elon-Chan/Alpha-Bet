@@ -68,7 +68,7 @@
 
 #postlistcardr2 a {
     color: white;
-    font-size: 47px;
+    font-size: 30px;
 }
 
 #postlistcardr3 {
@@ -76,7 +76,6 @@
     grid-row-end: r4;
     font-family: AspergitRegular;
     justify-self: center;
-    align-self: center;
 }
 
 #postlistcardr3 p {
@@ -84,9 +83,7 @@
     grid-row-end: r4;
     color: white;
     font-family: AspergitRegular;
-    justify-self: center;
-    align-self: center;
-    font-size: 26px;
+    font-size: 18px;
 }
 
 #postlistcardr4 {
@@ -122,7 +119,7 @@
     justify-self: center;
     align-self: center;
     /* margin-left: 10px; */
-    font-size: 24px;
+    font-size: 18px;
 }
 
 #postlistcardc3 {
@@ -300,6 +297,7 @@ h1, h2, h3, h4, h5, h6, p, hr {
 
 a {
     color: white;
+    text-decoration: none;
 }
 
 div.navbar-collapse ul.navbar-nav li {

@@ -104,6 +104,10 @@
     margin-left: 0.2cm;
 }
 
+#postcommentimg, #postlistcardc1 img {
+    object-fit: cover;
+}
+
 .row-sm .rounded-circle{
     height: 50px;
     width: 50px;
@@ -213,7 +217,7 @@
 }
 
 #commentcontent {
-    font-size: 30px;
+    font-size: 18px;
 }
 
 #profile_picture {

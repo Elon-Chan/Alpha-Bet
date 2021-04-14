@@ -57,7 +57,7 @@
     {% else %}
         {% for comment in comment %}
         <div id="Comments" class="container">
-            {% if comment.comment_author.profile %}
+            {% if comment.comment_author.profile and comment.comment_author.profile.profile_picture %}
                 <div class="row">
                     <div class="col-auto">
                         <a href="{% url 'profile' pk=comment.comment_author.id %}"><img id="postcommentimg" class="rounded-circle" src="../../../mediafiles/{{comment.comment_author.profile.profile_picture}}"></a>

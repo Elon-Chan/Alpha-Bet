@@ -13,11 +13,6 @@
     </div>
     <br>
   {% endif %}
-  {% if author.email %}
-    <h5>User email is: {{ author.email }}</h5>
-  {% else %}
-    <h5>User have not set email yet!</h5>
-  {% endif %}
 <hr>
 <h2>Posts:</h2>
   {% if page.object_list %}
@@ -33,10 +28,10 @@
             {% endif %}
           </div>
           <div id="postlistcardr2" class="row-sm">
-            <h3 class="text-center"><a href="{{ post.get_absolute_url }}">{{ post.title|truncatechars:10 }}</a></h3>
+            <h3 class="text-center"><a href="{{ post.get_absolute_url }}">{{ post.title|truncatechars:20 }}</a></h3>
           </div>
           <div id="postlistcardr3" class="row">
-            <p class="card-text lead" >{{ post.content|truncatewords:3 }}...</p>
+            <p class="card-text lead" >{{ post.content|truncatewords:19 }}...</p>
           </div>
           <div id="postlistcardr4" class="row-sm">
             {% if post.author.profile %}
@@ -45,7 +40,7 @@
               </span>
             {% else %}
               <span id="postlistcardc1" class="col-1">
-                <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png"></a>asd
+                <a href="{% url 'profile' pk=post.author.id %}"><img class="rounded-circle" src="../../../mediafiles/img/profile/Alphabet_Icon.png"></a>
               </span>
             {% endif %}
             <span id="postlistcardc2" class="col-8">
@@ -72,7 +67,7 @@
       <h2>The user does not have any post.</h2>
     {% endif %}
 
-    {% if posts.count > 6 %}
+    {% if posts.count > 3 %}
       <nav aria-label="Page navigation">
         <ul class="pagination ms-auto">
           <li class="page-item">

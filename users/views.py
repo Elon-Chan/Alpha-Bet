@@ -61,6 +61,7 @@ def profile(request, pk):
     for post in posts:
         post.content = textify(post.content)
         post.content = post.content.replace("&nbsp;", ' ')
+        post.content = post.content.replace("&#39;", '\'')
 
     paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)

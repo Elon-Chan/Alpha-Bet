@@ -24,6 +24,6 @@ Under ./stock_floor/templates/stock_floor, all the .html files contain our own c
 
 To run the code, you may create a virtual environment using conda and install all the library from the environment.yml, then simply type
 
-    python managy.py runserver
+    python manage.py runserver
 
 ---

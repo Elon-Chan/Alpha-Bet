@@ -6,11 +6,31 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 class PostCreateForm(forms.ModelForm):
+    """
+    A class used to handle the creation form of a post
+    ...
+    Attributes
+    ----------
+    model : object
+        The model need to be used
+    fields : 
+        the fields of the form when creating a post
+    """
     class Meta:
         model = Post
         fields = ['title', 'content', 'tgtags', 'coverimg']
 
 class CommentCreateForm(forms.ModelForm):
+    """
+    A class used to handle the creation form of a comment
+    ...
+    Attributes
+    ----------
+    model : object
+        The model need to be used
+    fields : 
+        the fields of the form when creating a post
+    """
     class Meta:
         model = Comment
         fields = ['comment']
@@ -24,6 +44,14 @@ class CommentCreateForm(forms.ModelForm):
         }
 
 class UserRegisterForm(UserCreationForm):
+    """
+    A class used to handle the registation form of a user
+    ...
+    Attributes
+    ----------
+    email : str
+        The string of the email of the user's input
+    """
     email = forms.EmailField()
 
     def __init__(self, *args, **kwargs):

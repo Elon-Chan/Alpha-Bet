@@ -10,6 +10,37 @@ from ckeditor.fields import RichTextField
 User = get_user_model()
 
 class Post(models.Model):
+    """
+    A class used to define the model of a post
+    ...
+    Attributes
+    ----------
+    title : str
+        the title of the post
+    content : str
+        the content of a post
+    date_posted : str
+        the create date of the post
+    author : str
+        the author of a post
+    slug : str
+        the unique string of a post
+    tgtags : TaggableManager object
+        the tags of a post
+    coverimg : image
+        the cover image of a post
+    
+    Methods
+    ----------
+    get_absolute_url(self)
+        get and return the url of the post
+    get_update_url(self):
+        get and return the post update url
+    get_delete_url(self):
+        get and return the delete post url
+    get_tag_name(self):
+        get and return the list of tags of the post
+    """
     title = models.CharField(max_length=100)
     content = RichTextField(blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
@@ -36,6 +67,22 @@ class Post(models.Model):
         ordering = ['-date_posted']
 
 class Comment(models.Model):
+    """
+    A class used to define the model of a post
+    ...
+    Attributes
+    ----------
+    post : object
+        the object of a post
+    comment_author : str
+        the author of a comment
+    comment : str
+        the content of a comment
+    comment_date_added : str
+        the date of a comment
+    parent : object
+        the current post
+    """
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     comment_author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()

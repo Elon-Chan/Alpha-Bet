@@ -21,14 +21,24 @@ import re
 from django.utils.html import strip_tags
 
 def textify(html):
-    # Remove html tags and continuous whitespaces 
+    """Remove HTML tag
+    Parameters
+    ----------
+    html : str
+        The html string need to be read
+    """
     text_only = re.sub('[ \t]+', ' ', strip_tags(html))
-    # Strip single spaces in the beginning of each line
     return text_only.replace('\n ', '\n').strip()
 
 UserModel = get_user_model()
 
 def register(request):
+    """Register function
+    Parameters
+    ----------
+    request : object
+        the request object need to be used in the framework
+    """
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -55,6 +65,14 @@ def register(request):
 
 @login_required
 def profile(request, pk):
+    """User profile page view
+    Parameters
+    ----------
+    request : object
+        the request object need to be used in the framework
+    pk : int
+        the user id of a profile
+    """
     posts = Post.objects.filter(author=pk)
     author = User.objects.get(id=pk)
 
@@ -88,12 +106,18 @@ def profile(request, pk):
     return render(request, 'users/profile.html', context)
 
 def activate_done(request):
+    """Finish register new account page view (before email confirmation)
+    """
     return render(request, "users/activate_done.html")
 
 def activate_complete(request):
+    """Finish activate new account page view
+    """
     return render(request, "users/activate_complete.html")
 
 def activate(request, uidb64, token):
+    """A function used to handle new account's activation
+    """
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = UserModel._default_manager.get(pk=uid)
@@ -107,6 +131,21 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 
 class EditProfilePageView(generic.UpdateView):
+    """
+    A class used to handle the edit of a user profile
+    ...
+    Attributes
+    ----------
+    model : object
+        The model need to be used
+    template_name : str
+        HTML template need to be used for font end
+
+    Methods
+    ----------
+    get_redirect_url(self, pk)
+        get the redirect url
+    """
     model = Profile
     template_name = 'users/profile_edit.html'
     # success_url = reverse_lazy('profile')
@@ -117,6 +156,23 @@ class EditProfilePageView(generic.UpdateView):
                             kwargs={'pk': pk},)
 
 class CreateProfileView(CreateView):
+    """
+    A class used to handle the edit of a user profile
+    ...
+    Attributes
+    ----------
+    model : object
+        The model need to be used
+    form_class : class
+        the form need to be used for creating a profile
+    template_name : str
+        HTML template need to be used for font end
+
+    Methods
+    ----------
+    form_valid(self, form)
+        get the valid form from client
+    """
     model = Profile
     form_class = CreateProfileForm
     template_name = 'users/profile_create.html'

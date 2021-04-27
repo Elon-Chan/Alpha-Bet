@@ -24,12 +24,22 @@ import re
 from django.utils.html import strip_tags
 
 def textify(html):
-    # Remove html tags and continuous whitespaces 
+    """Remove HTML tag
+    Parameters
+    ----------
+    html : str
+        The html string need to be read
+    """
     text_only = re.sub('[ \t]+', ' ', strip_tags(html))
-    # Strip single spaces in the beginning of each line
     return text_only.replace('\n ', '\n').strip()
 
 def mainpage(request):
+    """Stock floor landing page view
+    Parameters
+    ----------
+    request : object
+        the request object need to be used in the framework
+    """
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -57,10 +67,22 @@ def mainpage(request):
 
 @login_required
 def portalView(request):
+    """Website portal page view
+    Parameters
+    ----------
+    request : object
+        the request object need to be used in the framework
+    """
     return render(request, 'stock_floor/portal.html')
 
 @login_required
 def post_list(request):
+    """Stock floor post listing page view
+    Parameters
+    ----------
+    request : object
+        the request object need to be used in the framework
+    """
     search_query = request.GET.get('search', '')
     if search_query:
         posts = Post.objects.filter(Q(title__icontains=search_query) | Q(content__icontains=search_query))
@@ -97,6 +119,27 @@ def post_list(request):
     return render(request, 'stock_floor/post.html', context)
 
 class PostDetailView(HitCountDetailView, ListView):
+    """
+    A class used to handle the details of a post
+    ...
+    Attributes
+    ----------
+    model : object
+        The model need to be used
+    template_name : str
+        HTML template need to be used for font end
+    slug_field : str
+        the unique field of a post
+
+    Methods
+    ----------
+    post(self, request, *args, **kwargs)
+        receive post request
+    get_context_data(self, **kwargs)
+        get the post form's data
+    post_detail(request, slug)
+        display the post's details data for the browser
+    """
     model = Post
     template_name = 'stock_floor/post_detail.html'
     slug_field = "slug"
@@ -131,6 +174,14 @@ class PostDetailView(HitCountDetailView, ListView):
 
 @login_required
 def TgtagDetailList(request, slug):
+    """Tag listing page view
+    Parameters
+    ----------
+    request : object
+        the request object need to be used in the framework
+    slug : str
+        the unique str of a post
+    """
         tgtag = Post.objects.filter(tgtags__name__in=[slug])
         tagname = slug
 
@@ -164,6 +215,21 @@ def TgtagDetailList(request, slug):
         return render(request, 'stock_floor/tgtag_detail.html', context)
 
 class PostCreateView(CreateView):
+    """
+    A class used to handle the creation of a post
+    ...
+    Attributes
+    ----------
+    model : object
+        The model need to be used
+    fields : list of str
+        the form's fields
+
+    Methods
+    ----------
+    form_valid(self, form)
+        a function used to receive a form
+    """
     model = Post
     fields = ['title', 'content', 'tgtags', 'coverimg']
 
@@ -172,6 +238,24 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 class PostUpdateView(UserPassesTestMixin, UpdateView):
+    """
+    A class used to handle the update of a post
+    ...
+    Attributes
+    ----------
+    model : object
+        The model need to be used
+
+    Methods
+    ----------
+    get(self, request, slug)
+        a function used to receive a form and the current post
+    post(self, request, slug)
+        receive post request
+    test_func(self)
+        a function need to be define for the framework to function properly,
+        used to check if the current user is the post author or not
+    """
     model = Post
 
     def get(self, request, slug):
@@ -196,6 +280,19 @@ class PostUpdateView(UserPassesTestMixin, UpdateView):
         return False
 
 class PostDeleteView(View):
+    """
+    A class used to handle the update of a post
+    ...
+    Attributes
+    ----------
+
+    Methods
+    ----------
+    get(self, request, slug)
+        a function used to get the current post
+    post(self, request, slug)
+        receive post request
+    """
     def get(self, request, slug):
         post = Post.objects.get(slug__iexact=slug)
         return render(request, 'stock_floor/post_delete.html', context={'post':post})

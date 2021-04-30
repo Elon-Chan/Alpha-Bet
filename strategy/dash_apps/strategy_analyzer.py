@@ -1,3 +1,14 @@
+"""Strategy Analyzer
+
+This script contain the main function of strategy analyzer and is divided into 3 parts.
+1. Layout
+2. Main Function
+3. Supportive Functions that are called by the main function
+
+Required library are listed and classified below
+"""
+
+
 # dash related libraries
 from typing import Dict
 import dash
@@ -29,6 +40,16 @@ import talib
 
 
 def blank_figure():
+    """Return a blank plotly go figure, to act as a placeholder
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    plot go object
+    """
     fig = go.Figure(go.Scatter(x=[], y = []))
     fig.update_layout(template = None, paper_bgcolor = 'rgba(0,0,0,0)',
                     plot_bgcolor = 'rgba(0,0,0,0)')
@@ -39,15 +60,58 @@ def blank_figure():
 
 
 def today():
+    """Compute today's date
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    Python Date object
+    """
     return datetime.now().date()
 
 def download_yfinance_data(ticker, start_date, end_date):
+    """Grab financial data from yahoo finance api
+
+    Parameters
+    ----------
+    ticker: string
+        a stock ticker
+    start_date: python date object
+        The start date of the desired period
+    end_date: python date object
+        The end date of the desired period
+
+    Returns
+    -------
+    pandas dataframe
+        a pandas dataframe containing detailed financial information
+    """
     print('downloading')
     stock = yf.Ticker(ticker)
     history = stock.history(start=start_date, end=end_date)
     return history
 
 def compute_bnh_performance(df):
+    """Comptute the performance of buy and hold strategy
+
+    Parameters
+    ----------
+    df: Pandas dataframe
+
+    Returns
+    -------
+    pct_return: float
+        percentage return of the strategy
+    volatility: float
+        volatility of the strategy
+    mdd: float
+        maximum drawdown of the strategy
+    sharpe: float
+        sharpe ratio of the strategy
+    """
     pct_return = round((df['Close'].iloc[-1] / df['Close'].iloc[0] - 1) * 100, 2)
     volatility = round(df['Close'].std(), 2)
 
@@ -59,7 +123,27 @@ def compute_bnh_performance(df):
     return [pct_return, volatility, mdd, sharpe]
 
 def compute_strategy_performance(df, buy_technical_indicators, sell_technical_indicators):
-    
+    """Comptute the performance of user defined strategy
+
+    Parameters
+    ----------
+    df: Pandas dataframe
+    buy_technical_indicators: list
+        containing the TA that the user specificed as 'BUY' signal
+    sell_technical_indicators: list
+        containing the TA that the user specificed as 'SELL' signal
+
+    Returns
+    -------
+    strategy_return: float
+        percentage return of the strategy
+    volatility: float
+        volatility of the strategy
+    mdd: float
+        maximum drawdown of the strategy
+    sharpe: float
+        sharpe ratio of the strategy
+    """
     pct_return = (df['Close'] / df['Close'].shift(1) - 1)
     
     buy = np.where(buy_technical_indicators[0] > buy_technical_indicators[1], 1, 0)
@@ -86,11 +170,13 @@ def compute_strategy_performance(df, buy_technical_indicators, sell_technical_in
     return [strategy_return, volatility, mdd, sharpe]
 
 
+# initialize the application
 app = DjangoDash('strategy_analyzer', add_bootstrap_links=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 disclaim = 'The content of this webpage is not an investment advice and does not constitute any offer or solicitation to offer or recommendation of any investment product. It is for general purposes only and does not take into account your individual needs, investment objectives and specific financial circumstances. Investment involves risk. The investor type classification has no relationship with and is not any substitute for the Financial Needs Analysis (the “FNA”) or your risk profiling under the FNA. You instruct us that if there is any conflict or inconsistency between the investor type classification and your investment risk profiling under the FNA, the latter shall prevail and be used for assessing your risk profile for your conducting investment product transaction with our Bank. Please also note that asset allocation does not generate positive return or protection against market loss.'
 
 
+# This variable contain the whole html format of this webpage
 app.layout = html.Div(children=[
     # title
     html.H1(children="Stock Strategy Analyzer", style={'text-align': 'center', 'font-family': 'HaextPlain'}),
@@ -354,7 +440,10 @@ app.layout = html.Div(children=[
     ]
 )
 def display_graph(n_clicks, slider, ticker, start_date, end_date, buy_strategy_1, buy_strategy_1_parameter_value, buy_strategy_2, buy_strategy_2_parameter_value, sell_strategy_1, sell_strategy_1_parameter_value, sell_strategy_2, sell_strategy_2_parameter_value):
+    """The main function handler of the page
 
+    The input are passed into the helper functions above, the result is than channeled into the app.layout for display.
+    """
     if n_clicks == 0: 
         raise dash.exceptions.PreventUpdate
 
@@ -376,7 +465,7 @@ def display_graph(n_clicks, slider, ticker, start_date, end_date, buy_strategy_1
 
     fig.add_trace(go.Candlestick(x=df.index,
             open=df['Open'], high=df['High'],
-            low=df['Low'], close=df['Close'], name='Price'),
+            low=df['Low'], close=df['Close'], name='Price',),
         secondary_y=False)
 
     fig.update_layout(xaxis_rangeslider_visible='slider' in slider, paper_bgcolor = 'rgba(0,0,0,0)',
@@ -467,7 +556,9 @@ def display_graph(n_clicks, slider, ticker, start_date, end_date, buy_strategy_1
     ],
     )
 def display_inputs(buy_strategy_1, buy_strategy_2, sell_strategy_1, sell_strategy_2):
-
+    """
+    The strategy is passed into the technical_indicators.py for actual computation. Result is channled to app.layout for display.
+    """
     buy_strategy_1_parameter = create_input(buy_strategy_1, 'buy', '1')
     buy_strategy_2_parameter = create_input(buy_strategy_2, 'buy', '2')
     sell_strategy_1_parameter = create_input(sell_strategy_1, 'sell', '1')

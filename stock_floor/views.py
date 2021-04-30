@@ -182,37 +182,37 @@ def TgtagDetailList(request, slug):
     slug : str
         the unique str of a post
     """
-        tgtag = Post.objects.filter(tgtags__name__in=[slug])
-        tagname = slug
+    tgtag = Post.objects.filter(tgtags__name__in=[slug])
+    tagname = slug
 
-        for post in tgtag:
-            post.content = textify(post.content)
-            post.content = post.content.replace("&nbsp;", ' ')
-            post.content = post.content.replace("&#39;", '\'')
+    for post in tgtag:
+        post.content = textify(post.content)
+        post.content = post.content.replace("&nbsp;", ' ')
+        post.content = post.content.replace("&#39;", '\'')
 
-        paginator = Paginator(tgtag, 3)
-        page_number = request.GET.get('page', 1)
-        page = paginator.get_page(page_number)
+    paginator = Paginator(tgtag, 3)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
 
-        if page.has_next():
-            next_url = f'?page={page.next_page_number()}'
-        else:
-            next_url = ''
+    if page.has_next():
+        next_url = f'?page={page.next_page_number()}'
+    else:
+        next_url = ''
 
-        if page.has_previous():
-            prev_url = f'?page={page.previous_page_number()}'
-        else:
-            prev_url = ''
-            
-        context = {
-            'page':page,
-            'next_url':next_url,
-            'prev_url':prev_url,
-            'tgtag':tgtag,
-            'tagname':tagname,
-        }
+    if page.has_previous():
+        prev_url = f'?page={page.previous_page_number()}'
+    else:
+        prev_url = ''
+        
+    context = {
+        'page':page,
+        'next_url':next_url,
+        'prev_url':prev_url,
+        'tgtag':tgtag,
+        'tagname':tagname,
+    }
 
-        return render(request, 'stock_floor/tgtag_detail.html', context)
+    return render(request, 'stock_floor/tgtag_detail.html', context)
 
 class PostCreateView(CreateView):
     """

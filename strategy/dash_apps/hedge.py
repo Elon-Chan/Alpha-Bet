@@ -1,3 +1,13 @@
+"""Hedger
+
+This script contain the main function of hedger and is divided into 3 parts.
+1. Layout
+2. Main Function
+3. Supportive Functions that are called by the main function
+
+Required library are listed and classified below
+"""
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -17,6 +27,16 @@ disclaim = 'The content of this webpage is not an investment advice and does not
 app = DjangoDash('hedge', add_bootstrap_links=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 def blank_figure():
+    """Return a blank plotly go figure, to act as a placeholder
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    plot go object
+    """
     fig = go.Figure(go.Scatter(x=[], y = []))
     fig.update_layout(template = None,
     margin=dict(
@@ -30,7 +50,7 @@ def blank_figure():
     return fig
 
 
-
+# The layout of the webpage's html 
 app.layout =  html.Div([
         dbc.CardHeader([
                         html.H1("Risk Hedger",style={'text-align': 'center', 'font-family': 'HaextPlain', 'color': 'white'}),
@@ -91,6 +111,9 @@ app.layout =  html.Div([
     [Input('add-stock', 'n_clicks')],
     [State('input-container', 'children')])
 def display_inputs(n_clicks, children):
+    """
+    Handle the dynamic number of inputs
+    """
     new_input = [
         dcc.Input(
             id = {
@@ -131,6 +154,9 @@ def display_inputs(n_clicks, children):
         State({'type': 'num-shares', 'index': ALL}, 'value'),
     ])
 def generate_chart(n_clicks, stock_tickers, num_shares):
+    """
+    Generate the radar performance chart and the performance report
+    """
     if n_clicks == 0: 
         raise dash.exceptions.PreventUpdate
 

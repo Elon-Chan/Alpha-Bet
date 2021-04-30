@@ -51,6 +51,9 @@ number_of_parameters = {
 
 
 def create_input(strategy, direction, position):
+    """
+    This is the function that handle the dynamic input sequence
+    """
     persistence = True
     persistence_type = 'Memory'
     input_box_style = {'font-size': '15px'}
@@ -110,7 +113,9 @@ def create_input(strategy, direction, position):
 
 
 def compute_technical_indicators(df, strategy_1, strategy_1_parameter, strategy_2, strategy_2_parameter):
-
+    """
+    Return the actual technical indicators that user specified
+    """
     indicator = [0 ,0]
 
     # 
